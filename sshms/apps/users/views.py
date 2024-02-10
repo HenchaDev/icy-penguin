@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm
+from django.contrib.auth import authenticate, login
+from .forms import SignUpForm, UserLoginForm
 
 def sign_up(request):
     if request.method == 'POST':
@@ -9,4 +10,18 @@ def sign_up(request):
             return redirect('home') 
     else:
         form = SignUpForm()
-    return render(request, 'sign_up.html', {'form': form})
+    return render(request, 'users/signup.html', {'form': form})
+
+def user_login(request):
+    if request.method == 'POST':
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+    else:
+        form = UserLoginForm()
+    return render(request, 'users/login.html', {'form':form})
