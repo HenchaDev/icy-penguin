@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.urls import reverse_lazy
 from .forms import SignUpForm, UserLoginForm
 
 def sign_up(request):
@@ -7,7 +8,7 @@ def sign_up(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home') 
+            return redirect(reverse_lazy('login')) 
     else:
         form = SignUpForm()
     return render(request, 'users/signup.html', {'form': form})
