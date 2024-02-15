@@ -16,6 +16,6 @@ class UserLoginForm(forms.Form):
     
 class ProfileForm(forms.ModelForm):
     class Meta:
-        models = UserProfile
-        feilds = ['age', 'sex', 'height', 'weight', 'bmi', 'vaccination_history', 'previous_medications', 'procedures', 'hospitalizations', 'current_symptoms']
+        model = UserProfile
+        fields = ['age', 'sex', 'height', 'weight', 'bmi', 'vaccination_history', 'previous_medications', 'procedures', 'hospitalizations', 'current_symptoms']
         

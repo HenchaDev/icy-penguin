@@ -37,7 +37,7 @@ def complete_profile(request):
         
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=profile)
-        if form.s_valid():
+        if form.is_valid():
             profile = form.save()
             return redirect('main:home')
     else:
