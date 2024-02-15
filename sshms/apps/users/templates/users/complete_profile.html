@@ -1,0 +1,61 @@
+<!-- complete_profile.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-8">
+        <h1 class="text-3xl font-semibold mb-4">Complete Your Profile</h1>
+        <form method="post" class="max-w-md">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="id_age" class="block text-sm font-medium text-gray-700">Age</label>
+                <input type="number" id="id_age" name="age" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.age.value }}">
+            </div>
+            <div class="mb-4">
+                <label for="id_sex" class="block text-sm font-medium text-gray-700">Sex</label>
+                <input type="text" id="id_sex" name="sex" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.sex.value }}">
+            </div>
+            <div class="mb-4">
+                <label for="id_height" class="block text-sm font-medium text-gray-700">Height (cm)</label>
+                <input type="number" id="id_height" name="height" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.height.value }}">
+            </div>
+            <div class="mb-4">
+                <label for="id_weight" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                <input type="number" id="id_weight" name="weight" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.weight.value }}">
+            </div>
+            <div class="mb-4">
+                <label for="id_bmi" class="block text-sm font-medium text-gray-700">BMI</label>
+                <input type="number" id="id_bmi" name="bmi" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.bmi.value }}">
+            </div>
+            <div class="mb-4">
+                <label for="id_vaccination_history" class="block text-sm font-medium text-gray-700">Vaccination History</label>
+                <textarea id="id_vaccination_history" name="vaccination_history" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.vaccination_history.value }}</textarea>
+            </div>
+            <div class="mb-4">
+                <label for="id_previous_medications" class="block text-sm font-medium text-gray-700">Previous Medications</label>
+                <textarea id="id_previous_medications" name="previous_medications" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.previous_medications.value }}</textarea>
+            </div>
+            <div class="mb-4">
+                <label for="id_procedures" class="block text-sm font-medium text-gray-700">Procedures</label>
+                <textarea id="id_procedures" name="procedures" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.procedures.value }}</textarea>
+            </div>
+            <div class="mb-4">
+                <label for="id_hospitalizations" class="block text-sm font-medium text-gray-700">Hospitalizations</label>
+                <textarea id="id_hospitalizations" name="hospitalizations" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.hospitalizations.value }}</textarea>
+            </div>
+            <div class="mb-4">
+                <label for="id_current_symptoms" class="block text-sm font-medium text-gray-700">Current Symptoms</label>
+                <textarea id="id_current_symptoms" name="current_symptoms" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.current_symptoms.value }}</textarea>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
