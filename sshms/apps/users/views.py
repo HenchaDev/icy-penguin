@@ -39,7 +39,15 @@ def complete_profile(request):
         form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             profile = form.save()
-            return redirect('main:home')
+            return redirect('profile')
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'users/complete_profile.html', {'form': form})
+@login_required
+def view_profile(request):
+    try:
+        # profile = UserProfile(user=request.user)
+        profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        profile = None
+    return render(request, 'users/profile.html', {'profile': profile})

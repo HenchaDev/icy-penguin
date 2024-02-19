@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <h1 class="text-3xl font-bold underline">Welcome!</h1>
+    <h1 class="text-3xl font-bold underline">Welcome! {{ request.user.username }}</h1>
+    {% block content %}
+    {% endblock %}
 </body>
 </html>

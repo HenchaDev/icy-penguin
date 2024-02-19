@@ -1,0 +1,32 @@
+{% extends 'main/home.html' %}
+
+{% block content %}
+
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <a href="{% url 'main:home' %}" class="text-blue-500 hover:underline">Home</a>
+        <a href="{% url 'logout' %}" class="text-red-500 hover:underline">Logout</a>
+    </div>
+    <h1 class="text-3xl font-bold mb-4">
+    {% if profile %}
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <p><span class="font-semibold">Username:</span> {{ request.user.username }}</p>
+            <p><span class="font-semibold">Email:</span> {{ request.user.email }}</p>
+            <p><span class="font-semibold">Age:</span> {{ profile.age }}</p>
+            <p><span class="font-semibold">Sex:</span> {{ profile.sex }}</p>
+            <p><span class="font-semibold">Height:</span> {{ profile.height }} cm</p>
+            <p><span class="font-semibold">Weight:</span> {{ profile.weight }} kg</p>
+            <p><span class="font-semibold">BMI:</span> {{ profile.bmi }}</p>
+            <p><span class="font-semibold">Vaccination History:</span> {{ profile.vaccination_history }}</p>
+            <p><span class="font-semibold">Previous Medications:</span> {{ profile.previous_medications }}</p>
+            <p><span class="font-semibold">Procedures:</span> {{ profile.procedures }}</p>
+            <p><span class="font-semibold">Hospitalizations:</span> {{ profile.hospitalizations }}</p>
+            <p><span class="font-semibold">Current Symptoms:</span> {{ profile.current_symptoms }}</p>
+        </div>
+    {% else %}
+        <p class="text-red-500 mt-4">No profile found</p>
+    {% endif %}
+    </h1>
+</div>
+
+{% endblock %}
