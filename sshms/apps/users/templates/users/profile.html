@@ -10,49 +10,41 @@
             <button type="submit" class="text-red-500 hover:underline">Logout</button>
         </form>
     </div>
-    <h1 class="text-xl font-semibold mb-4">
     {% if profile %}
-    <div class="container mx-auto px-4 py-8 flex flex-wrap">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <!-- User Info Card -->
-        <div class="card bg-white rounded-lg shadow-md p-6 m-4 transition-transform ease-out duration-1000 transform translate-y-4 card-user-info w-full md:w-1/3">
+        <div id="user-info-card" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1000 transform translate-y-4">
             <h2 class="text-lg font-semibold mb-4">User Info</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <p><span class="font-semibold">Username:</span> {{ request.user.username }}</p>
-                <p><span class="font-semibold">Email:</span> {{ request.user.email }}</p>
-            </div>
-            <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <p><span class="font-semibold">Username:</span> {{ request.user.username }}</p>
+            <p><span class="font-semibold">Email:</span> {{ request.user.email }}</p>
+            <button id="edit-user-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
         </div>
     
         <!-- Medical Info Card -->
-        <div class="card bg-white rounded-lg shadow-md p-6 m-4 transition-transform ease-out duration-1500 transform translate-y-4 card-medical-info w-full md:w-1/3">
+        <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1500 transform translate-y-4">
             <h2 class="text-lg font-semibold mb-4">Medical Info</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <p><span class="font-semibold">Age:</span> {{ profile.age }}</p>
-                <p><span class="font-semibold">Sex:</span> {{ profile.sex }}</p>
-                <p><span class="font-semibold">Height:</span> {{ profile.height }} cm</p>
-                <p><span class="font-semibold">Weight:</span> {{ profile.weight }} kg</p>
-                <p><span class="font-semibold">BMI:</span> {{ profile.bmi }}</p>
-            </div>
+            <p><span class="font-semibold">Age:</span> {{ profile.age }}</p>
+            <p><span class="font-semibold">Sex:</span> {{ profile.sex }}</p>
+            <p><span class="font-semibold">Height:</span> {{ profile.height }} cm</p>
+            <p><span class="font-semibold">Weight:</span> {{ profile.weight }} kg</p>
+            <p><span class="font-semibold">BMI:</span> {{ profile.bmi }}</p>
             <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
         </div>
     
         <!-- Medical History Card -->
-        <div class="card bg-white rounded-lg shadow-md p-6 m-4 transition-transform ease-out duration-2000 transform translate-y-4 card-medical-history w-full md:w-1/3">
+        <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2000 transform translate-y-4">
             <h2 class="text-lg font-semibold mb-4">Medical History</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <p><span class="font-semibold">Vaccination History:</span> {{ profile.vaccination_history }}</p>
-                <p><span class="font-semibold">Previous Medications:</span> {{ profile.previous_medications }}</p>
-                <p><span class="font-semibold">Procedures:</span> {{ profile.procedures }}</p>
-                <p><span class="font-semibold">Hospitalizations:</span> {{ profile.hospitalizations }}</p>
-                <p><span class="font-semibold">Current Symptoms:</span> {{ profile.current_symptoms }}</p>
-            </div>
+            <p><span class="font-semibold">Vaccination History:</span> {{ profile.vaccination_history }}</p>
+            <p><span class="font-semibold">Previous Medications:</span> {{ profile.previous_medications }}</p>
+            <p><span class="font-semibold">Procedures:</span> {{ profile.procedures }}</p>
+            <p><span class="font-semibold">Hospitalizations:</span> {{ profile.hospitalizations }}</p>
+            <p><span class="font-semibold">Current Symptoms:</span> {{ profile.current_symptoms }}</p>
             <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
         </div>
     </div>
     {% else %}
-        <p class="text-red-500 mt-4">No profile found</p>
+    <p class="text-red-500 mt-4">No profile found</p>
     {% endif %}
-    </h1>
 </div>
 
 <script>
@@ -63,6 +55,17 @@
             card.classList.remove('translate-y-4');
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function(){
+        document.getElementById('edit-user-info-btn').addEventListener('click', function(){
+            fetch('/users/edit_user_info/')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('user-info-card').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    })
 </script>
 
 {% endblock %}
