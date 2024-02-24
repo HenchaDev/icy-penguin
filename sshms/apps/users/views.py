@@ -51,3 +51,6 @@ def view_profile(request):
     except UserProfile.DoesNotExist:
         profile = None
     return render(request, 'users/profile.html', {'profile': profile})
+
+def logout(request):
+    return render(request, 'users/logout.html')
