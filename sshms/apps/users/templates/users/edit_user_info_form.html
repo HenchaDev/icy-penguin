@@ -1,6 +1,7 @@
 {% block content %}
 <!-- Edit User Info Form -->
 <form id="edit-user-info-form">
+    {% csrf_token %}
     <!-- Username -->
     <div class="mb-4">
         <label for="username" class="block font-semibold">Username:</label>
@@ -23,18 +24,21 @@
 
         const formData = new FormData(this);
 
-        fetch('save_user_info', {
+        fetch('/users/save_user_info/', {
             method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
             body: formData
         })
         .then(response => {
             if (response.ok){
-                alert('Changes saved successfully');
+                console.log('Changes saved successfully');
             } else {
-                alert('Error:', response.statusText);
+                console.error('Error:', response.statusText);
             }
         })
-        .catch(error => alert('Error:', error));
+        .catch(error => console.error('Error:', error));
     });
 </script>
 {% endblock %}

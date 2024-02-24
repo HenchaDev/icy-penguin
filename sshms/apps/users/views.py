@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .forms import SignUpForm, UserLoginForm, ProfileForm
@@ -59,19 +60,24 @@ def view_profile(request):
 def logout(request):
     return render(request, 'users/logout.html')
 
+@csrf_exempt
 def edit_user_info(request):
     return render(request, 'users/edit_user_info_form.html')
 
+@csrf_exempt
 def save_user_info(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
         
-        user = request.user
-        user.username = username
-        user.email = email
-        user.save()
-        
-        return JsonResponse({'message': 'User info updated successfully.'}, status=200)
+        if username and email:
+            user = request.user
+            user.username = username
+            user.email = email
+            user.save()
+            
+            return JsonResponse({'message': 'User info updated successfully.'}, status=200)
+        else:
+            return JsonResponse({'error': 'Invalid form data'}, status=400)
     else:
         return JsonResponse({'error': 'Method not allowed.'}, status=405)
