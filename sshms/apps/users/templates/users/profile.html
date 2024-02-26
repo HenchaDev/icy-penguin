@@ -21,14 +21,14 @@
         </div>
     
         <!-- Medical Info Card -->
-        <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1500 transform translate-y-4">
+        <div id="med-info-card" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1500 transform translate-y-4">
             <h2 class="text-lg font-semibold mb-4">Medical Info</h2>
             <p><span class="font-semibold">Age:</span> {{ profile.age }}</p>
             <p><span class="font-semibold">Sex:</span> {{ profile.sex }}</p>
             <p><span class="font-semibold">Height:</span> {{ profile.height }} cm</p>
             <p><span class="font-semibold">Weight:</span> {{ profile.weight }} kg</p>
             <p><span class="font-semibold">BMI:</span> {{ profile.bmi }}</p>
-            <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <button id="edit-med-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
         </div>
     
         <!-- Medical History Card -->
@@ -62,6 +62,17 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById('user-info-card').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function(){
+        document.getElementById('edit-med-info-btn').addEventListener('click', function(){
+            fetch('/users/edit_med_info/')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('med-info-card').innerHTML = data;
             })
             .catch(error => console.error('Error:', error));
         });

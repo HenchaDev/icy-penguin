@@ -1,6 +1,6 @@
-{% block content %}
+
 <!-- Edit User Info Form -->
-<form id="edit-user-info-form">
+<form id="edit-user-info-form" method="POST" action="{% url 'save_user_info' %}">
     {% csrf_token %}
     <!-- Username -->
     <div class="mb-4">
@@ -19,7 +19,7 @@
 </form>
 
 <script>
-    document.getElementById('edit-user-info-form').getEventListener('submit', function(event){
+    document.getElementById('edit-user-info-form').addEventListener('submit', function(event){
         event.preventDefault();
 
         const formData = new FormData(this);
@@ -27,7 +27,7 @@
         fetch('/users/save_user_info/', {
             method: 'POST',
             headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
+                'X-CSRFToken': getCookie('csrftoken')
             },
             body: formData
         })
@@ -35,10 +35,27 @@
             if (response.ok){
                 console.log('Changes saved successfully');
             } else {
-                console.error('Error:', response.statusText);
+                throw new Error('Failed to update user info.')
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to update user info. Please try again.')
+        });
     });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length +1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 </script>
-{% endblock %}

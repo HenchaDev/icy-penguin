@@ -16,4 +16,6 @@ class UserProfile(models.Model):
     hospitalizations = models.TextField()
     current_symptoms = models.TextField()
     
+    def __str__(self) -> str:
+        return self.user.username
     
