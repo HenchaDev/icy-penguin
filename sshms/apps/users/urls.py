@@ -3,6 +3,8 @@ from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
 
+app_name = 'users'
+
 urlpatterns = [
     path('signup/', views.sign_up, name='sign_up'),
     path('login/', views.user_login, name='login'),

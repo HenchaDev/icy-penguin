@@ -1,4 +1,4 @@
-<form id="edit-med-info-form" method="POST" action="{% url 'save_med_info' %}">
+<form id="edit-med-info-form" method="POST" action="{% url 'users:save_med_info' %}">
     {% csrf_token %}
     <!-- Age -->
     <div class="mb-4">

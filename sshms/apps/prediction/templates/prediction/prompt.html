@@ -1,0 +1,48 @@
+{% extends 'main:main/home.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictions</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-8">
+    <form id="generate-text-form" class="max-w-lg mx-auto bg-white p-4 rounded-lg shadow-md" action="" method="post">
+        {% csrf_token %}
+        <input class="w-full border border-gray-300 rounded-md px-3 py-2 mb-4" type="text" name="user_prompt" id="user_prompt" placeholder="Enter your prompt...">
+        <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Submit</button>
+    </form>
+    <div id="response-area" class="max-w-lg mx-auto mt-8"></div>
+
+    <script>
+        document.getElementById('generate-text-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = new FormData(this);
+
+            fetch('', {
+                method: 'POST',
+                body: form,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response-area').innerHTML = `
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                      <h2 class="text-xl font-semibold mb-4">Generated Text:</h2> 
+                      <p>${data.response}</p> 
+                    </div>
+                `;
+            })
+            .catch(error => console.error('Error:', error))
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

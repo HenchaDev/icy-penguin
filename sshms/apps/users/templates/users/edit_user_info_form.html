@@ -1,6 +1,6 @@
 
 <!-- Edit User Info Form -->
-<form id="edit-user-info-form" method="POST" action="{% url 'save_user_info' %}">
+<form id="edit-user-info-form" method="POST" action="{% url 'users:save_user_info' %}">
     {% csrf_token %}
     <!-- Username -->
     <div class="mb-4">
