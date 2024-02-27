@@ -32,14 +32,14 @@
         </div>
     
         <!-- Medical History Card -->
-        <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2000 transform translate-y-4">
+        <div id="med-hist-card" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2000 transform translate-y-4">
             <h2 class="text-lg font-semibold mb-4">Medical History</h2>
             <p><span class="font-semibold">Vaccination History:</span> {{ profile.vaccination_history }}</p>
             <p><span class="font-semibold">Previous Medications:</span> {{ profile.previous_medications }}</p>
             <p><span class="font-semibold">Procedures:</span> {{ profile.procedures }}</p>
             <p><span class="font-semibold">Hospitalizations:</span> {{ profile.hospitalizations }}</p>
             <p><span class="font-semibold">Current Symptoms:</span> {{ profile.current_symptoms }}</p>
-            <button class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <button id="edit-med-hist-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
         </div>
     </div>
     {% else %}
@@ -76,6 +76,17 @@
             })
             .catch(error => console.error('Error:', error));
         });
+    });
+
+    document.addEventListener("DOMContentLoaded", function(){
+        document.getElementById('edit-med-hist-btn').addEventListener('click', function(){
+            fetch('/users/edit_med_hist/')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('med-hist-card').innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error))
+        })
     })
 </script>
 

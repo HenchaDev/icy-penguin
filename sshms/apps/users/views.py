@@ -111,3 +111,30 @@ def save_med_info(request):
         return redirect('profile')
     else:
         return JsonResponse({'error': 'Method not allowed'})
+    
+@login_required
+def edit_med_hist(request):
+    profile = request.user.userprofile
+    return render(request, 'users/edit_med_hist_form.html')
+
+@login_required
+def save_med_hist(request):
+    if request.method == 'POST':
+        vaccination_history = request.POST.get('vaccination_history')
+        previous_medications = request.POST.get('previous_medications')
+        procedures = request.POST.get('procedures')
+        hospitalizations = request.POST.get('hospitalizations')
+        current_symptoms = request.POST.get('current_symptoms')
+        
+        profile = request.user.userprofile
+        
+        profile.vaccination_history = vaccination_history
+        profile.previous_medications = previous_medications
+        profile.procedures = procedures
+        profile.hospitalizations = hospitalizations
+        profile.current_symptoms = current_symptoms
+        
+        messages.success(request, 'Medical history updated successfully.')
+        return redirect('profile')
+    else:
+        return JsonResponse({'error': 'Method not allowed.'})
