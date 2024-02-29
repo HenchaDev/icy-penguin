@@ -9,7 +9,8 @@ def generate_text(request):
         prompt = request.POST.get('user_prompt')
         genai.configure(api_key=getattr(settings, 'GOOGLE_API_KEY', ''))
         model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_text(prompt)
-        return JsonResponse({'response': response})
+        response = model.generate_content(prompt)
+        generated_text = response.text
+        return JsonResponse({'response': generated_text})
     else:
         return render(request, 'prediction/prompt.html')

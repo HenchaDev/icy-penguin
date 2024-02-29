@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-GOOGLE_API_KEY = 'AIzaSyC0u6XtY2JmXQrJGY_RQ-5K0M9Z5rFRHps'
+GOOGLE_API_KEY = 'AIzaSyCJpEqYUb55Lb2DnxhDlDnUZJO7J7pOZH0'
 
 # Application definition
 
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     
     #my apps
     "apps.main",
-    # "apps.diseaseprediction",
+    "apps.prediction",
     "apps.users",
 ]
 
