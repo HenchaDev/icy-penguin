@@ -2,50 +2,151 @@
 
 {% block content %}
 
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-8">
-        <a href="{% url 'main:home' %}" class="inline-block px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">Home</a>
-        <form action="{% url 'users:logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="text-red-500 hover:underline">Logout</button>
-        </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <a href="{% url 'main:home' %}" class="inline-block px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">Home</a>
+            <form action="{% url 'users:logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="text-red-500 hover:underline">Logout</button>
+            </form>
+        </div>
+        {% if profile %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Demographic Information Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1000 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Demographic Information</h2>
+                <p><span class="font-semibold">Age:</span> {{ profile.age }}</p>
+                <p><span class="font-semibold">Gender:</span> {{ profile.sex }}</p>
+                <p><span class="font-semibold">Ethnicity/Race:</span> {{ profile.ethnicity_race }}</p>
+                <p><span class="font-semibold">Socioeconomic Status:</span> {{ profile.socioeconomic_status }}</p>
+                <div id="demographic-info-form" class="hidden"></div>
+                <button id="edit-demographic-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Medical History Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1500 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Medical History</h2>
+                <p><span class="font-semibold">Family History of Chronic Diseases:</span> {{ profile.family_history_chronic_diseases }}</p>
+                <p><span class="font-semibold">Diagnosed Chronic Conditions:</span> {{ profile.diagnosed_chronic_conditions }}</p>
+                <p><span class="font-semibold">Current Medications:</span> {{ profile.medications }}</p>
+                <p><span class="font-semibold">Past Surgeries:</span> {{ profile.surgeries }}</p>
+                <!-- Include other medical history fields here -->
+                <button id="edit-medical-history-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Lifestyle Factors Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2000 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Lifestyle Factors</h2>
+                <p><span class="font-semibold">Daily Diet:</span> {{ profile.typical_daily_diet }}</p>
+                <p><span class="font-semibold">Physical Activity:</span> {{ profile.physical_activity }}</p>
+                <p><span class="font-semibold">Tobacco Use:</span> {{ profile.smoking_habits }}</p>
+                <p><span class="font-semibold">Alcohol Consumption:</span> {{ profile.alcohol_consumption }}</p>
+                <p><span class="font-semibold">Recreational Drug Use:</span> {{ profile.recreational_drug_use }}</p>
+                <p><span class="font-semibold">Stress Management:</span> {{ profile.stress_management_methods }}</p>
+                <!-- Include other lifestyle factor fields here -->
+                <button id="edit-lifestyle-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Biometric Data Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2500 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Biometric Data</h2>
+                <p><span class="font-semibold">Height:</span> {{ profile.height }} cm</p>
+                <p><span class="font-semibold">Weight:</span> {{ profile.weight }} kg</p>
+                <p><span class="font-semibold">Blood Pressure:</span> {{ profile.blood_pressure }}</p>
+                <p><span class="font-semibold">Cholesterol Levels:</span> {{ profile.cholesterol_levels }}</p>
+                <p><span class="font-semibold">Blood Glucose Levels:</span> {{ profile.blood_glucose_levels }}</p>
+                <!-- Include other biometric data fields here -->
+                <button id="edit-biometric-data-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Environmental Exposures Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-3000 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Environmental Exposures</h2>
+                <p><span class="font-semibold">High Levels of Air Pollution:</span> {{ profile.air_pollution_exposure }}</p>
+                <p><span class="font-semibold">Occupational Hazards:</span> {{ profile.occupational_hazards }}</p>
+                <p><span class="font-semibold">Access to Clean Drinking Water:</span> {{ profile.clean_drinking_water_access }}</p>
+                <!-- Include other environmental exposure fields here -->
+                <button id="edit-environmental-exposures-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Genetic Factors Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-3500 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Genetic Factors</h2>
+                <p><span class="font-semibold">Genetic Conditions in Family History:</span> {{ profile.genetic_conditions }}</p>
+                <p><span class="font-semibold">Genetic Testing Results:</span> {{ profile.genetic_testing_results }}</p>
+                <!-- Include other genetic factor fields here -->
+                <button id="edit-genetic-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Behavioral Factors Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-4000 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Behavioral Factors</h2>
+                <p><span class="font-semibold">Adherence to Medical Recommendations:</span> {{ profile.medical_compliance }}</p>
+                <p><span class="font-semibold">Health Literacy Level:</span> {{ profile.health_literacy }}</p>
+                <!-- Include other behavioral factor fields here -->
+                <button id="edit-behavioral-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Psychosocial Factors Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-4500 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Psychosocial Factors</h2>
+                <p><span class="font-semibold">Diagnosed Mental Health Conditions:</span> {{ profile.mental_health_diagnosis }}</p>
+                <p><span class="font-semibold">Social Support Network:</span> {{ profile.social_support_network }}</p>
+                <!-- Include other psychosocial factor fields here -->
+                <button id="edit-psychosocial-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Occupational Factors Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-5000 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Occupational Factors</h2>
+                <p><span class="font-semibold">Type of Work:</span> {{ profile.occupation }}</p>
+                <p><span class="font-semibold">Stress Levels at Work:</span> {{ profile.work_stress }}</p>
+                <!-- Include other occupational factor fields here -->
+                <button id="edit-occupational-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Screening Tests Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-5500 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Screening Tests</h2>
+                <p><span class="font-semibold">Last Medical Check-up:</span> {{ profile.last_checkup }}</p>
+                <p><span class="font-semibold">Undergone Screening Tests:</span> {{ profile.cancer_screening }}</p>
+                <!-- Include other screening test fields here -->
+                <button id="edit-screening-tests-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Geographic Location Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-6000 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Geographic Location</h2>
+                <p><span class="font-semibold">Residence:</span> {{ profile.residencial_area }}</p>
+                <p><span class="font-semibold">Access to Healthcare Facilities:</span> {{ profile.access_to_healthcare }}</p>
+                <!-- Include other geographic location fields here -->
+                <button id="edit-geographic-location-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        
+            <!-- Additional Comments Card -->
+            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-6500 transform translate-y-4">
+                <h2 class="text-lg font-semibold mb-4">Additional Comments</h2>
+                <p><span class="font-semibold">Other Relevant Information:</span> {{ profile.additional_comments }}</p>
+                <!-- Include other additional comments fields here -->
+                <button id="edit-additional-comments-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-red-500 mt-4">No profile found</p>
+        {% endif %}
     </div>
-    {% if profile %}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- User Info Card -->
-        <div id="user-info-card" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1000 transform translate-y-4">
-            <h2 class="text-lg font-semibold mb-4">User Info</h2>
-            <p><span class="font-semibold">Username:</span> {{ request.user.username }}</p>
-            <p><span class="font-semibold">Email:</span> {{ request.user.email }}</p>
-            <button id="edit-user-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
-        </div>
-    
-        <!-- Medical Info Card -->
-        <div id="med-info-card" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1500 transform translate-y-4">
-            <h2 class="text-lg font-semibold mb-4">Medical Info</h2>
-            <p><span class="font-semibold">Age:</span> {{ profile.age }}</p>
-            <p><span class="font-semibold">Sex:</span> {{ profile.sex }}</p>
-            <p><span class="font-semibold">Height:</span> {{ profile.height }} cm</p>
-            <p><span class="font-semibold">Weight:</span> {{ profile.weight }} kg</p>
-            <p><span class="font-semibold">BMI:</span> {{ profile.bmi }}</p>
-            <button id="edit-med-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
-        </div>
-    
-        <!-- Medical History Card -->
-        <div id="med-hist-card" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2000 transform translate-y-4">
-            <h2 class="text-lg font-semibold mb-4">Medical History</h2>
-            <p><span class="font-semibold">Vaccination History:</span> {{ profile.vaccination_history }}</p>
-            <p><span class="font-semibold">Previous Medications:</span> {{ profile.previous_medications }}</p>
-            <p><span class="font-semibold">Procedures:</span> {{ profile.procedures }}</p>
-            <p><span class="font-semibold">Hospitalizations:</span> {{ profile.hospitalizations }}</p>
-            <p><span class="font-semibold">Current Symptoms:</span> {{ profile.current_symptoms }}</p>
-            <button id="edit-med-hist-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
-        </div>
-    </div>
-    {% else %}
-    <p class="text-red-500 mt-4">No profile found</p>
-    {% endif %}
-</div>
+</body>
+</html>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -56,38 +157,63 @@
         });
     });
 
-    document.addEventListener("DOMContentLoaded", function(){
-        document.getElementById('edit-user-info-btn').addEventListener('click', function(){
-            fetch('/users/edit_user_info/')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('user-info-card').innerHTML = data;
-            })
-            .catch(error => console.error('Error:', error));
+    document.addEventListener('DOMContentLoaded', function() {
+        const editDemographicInfoBtn = document.getElementById('edit-demographic-info-btn');
+        const demographicInfoForm = document.getElementById('demographic-info-form');
+        const demographicInfoCard = document.getElementById('demographic-info-card');
+
+        editDemographicInfoBtn.addEventListener('click', function() {
+            fetch('/users/edit_demographic_info_form/')
+                .then(response => response.text())
+                .then(formHTML => {
+                    demographicInfoForm.innerHTML = formHTML;
+                    demographicInfoForm.classList.remove('hidden');
+
+                    const form = demographicInfoForm.querySelector('form');
+                    form.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        const formData = new FormData(form);
+
+                        fetch('/users/edit_demographic_info/', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                demographicInfoCard.querySelector('p:nth-child(2)').textContent = `Age: ${data.age}`;
+                                demographicInfoCard.querySelector('p:nth-child(3)').textContent = `Gender: ${data.sex}`;
+                                demographicInfoCard.querySelector('p:nth-child(4)').textContent = `Ethnicity/Race: ${data.ethnicity_race}`;
+                                demographicInfoCard.querySelector('p:nth-child(5)').textContent = `Socioeconomic Status: ${data.socioeconomic_status}`;
+                                demographicInfoForm.innerHTML = '';
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                })
+                .catch(error => console.error('Error:', error));
         });
     });
 
-    document.addEventListener("DOMContentLoaded", function(){
-        document.getElementById('edit-med-info-btn').addEventListener('click', function(){
-            fetch('/users/edit_med_info/')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('med-info-card').innerHTML = data;
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
-
-    document.addEventListener("DOMContentLoaded", function(){
-        document.getElementById('edit-med-hist-btn').addEventListener('click', function(){
-            fetch('/users/edit_med_hist/')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('med-hist-card').innerHTML = data;
-            })
-            .catch(error => console.error('Error:', error))
-        })
-    })
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 </script>
 
 {% endblock %}

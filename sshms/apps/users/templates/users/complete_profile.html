@@ -1,5 +1,3 @@
-<!-- complete_profile.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,48 +10,235 @@
 <body class="bg-gray-100">
     <div class="container mx-auto mt-8">
         <h1 class="text-3xl font-semibold mb-4">Complete Your Profile</h1>
-        <form method="post" class="max-w-md">
+        <p class="text-lg text-gray-700 mb-8">Please complete the following to provide accurate predictions for chronic diseases.</p>
+        <form method="post" class="max-w-md" action="{% url 'users:complete_profile' %}">
             {% csrf_token %}
-            <div class="mb-4">
-                <label for="id_age" class="block text-sm font-medium text-gray-700">Age</label>
-                <input type="number" id="id_age" name="age" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.age.value }}">
+            
+            {% if form.errors %}
+                <div class="text-red-500">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <!-- Demographic Information -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Demographic Information</h2>
+                <div class="mb-4 {% if form.age.errors %}border border-red-500{% endif %}">
+                    <label for="id_age" class="block text-sm font-medium text-gray-700">Age</label>
+                    <input type="number" id="id_age" name="age" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.age.value }}">
+                </div>
+                <div class="mb-4 {% if form.sex.errors %}border border-red-500{% endif %}">
+                    <label for="id_sex" class="block text-sm font-medium text-gray-700">Gender</label>
+                    <input type="text" id="id_sex" name="sex" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.gender.value }}">
+                </div>
+                <div class="mb-4 {% if form.ethnicity_race.errors %}border border-red-500{% endif %}">
+                    <label for="id_ethnicity" class="block text-sm font-medium text-gray-700">Ethnicity/Race</label>
+                    <input type="text" id="id_ethnicity" name="ethnicity_race" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.ethnicity_race.value }}">
+                </div>
+                <div class="mb-4 {% if form.socioeconomic_status.errors %}border border-red-500{% endif %}">
+                    <label for="id_income" class="block text-sm font-medium text-gray-700">Socioeconomic Status (Annual Household Income)</label>
+                    <input type="text" id="id_income" name="socioeconomic_status" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.socioeconomic_status.value }}">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_sex" class="block text-sm font-medium text-gray-700">Sex</label>
-                <input type="text" id="id_sex" name="sex" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.sex.value }}">
+
+            <!-- Medical History -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Medical History</h2>
+                <div class="mb-4 {% if form.family_history.errors %}border border-red-500{% endif %}">
+                    <label for="id_family_history" class="block text-sm font-medium text-gray-700">Family History of Chronic Diseases</label>
+                    <input type="text" id="id_family_history" name="family_history_chronic_diseases" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.family_history_chronic_diseases.value }}">
+                </div>
+                <div class="mb-4 {% if form.diagnosed_conditions.errors %}border border-red-500{% endif %}">
+                    <label for="id_diagnosed_conditions" class="block text-sm font-medium text-gray-700">Diagnosed Chronic Conditions</label>
+                    <input type="text" id="id_diagnosed_conditions" name="diagnosed_chronic_conditions" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.diagnosed_chronic_conditions.value }}">
+                </div>
+                <div class="mb-4 {% if form.current_medications.errors %}border border-red-500{% endif %}">
+                    <label for="id_current_medications" class="block text-sm font-medium text-gray-700">Current Medications</label>
+                    <input type="text" id="id_current_medications" name="medications" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.medications.value }}">
+                </div>
+                <div class="mb-4 {% if form.previous_surgeries.errors %}border border-red-500{% endif %}">
+                    <label for="id_previous_surgeries" class="block text-sm font-medium text-gray-700">Previous Surgeries</label>
+                    <input type="text" id="id_surgeries" name="surgeries" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.surgeries.value }}">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_height" class="block text-sm font-medium text-gray-700">Height (cm)</label>
-                <input type="number" id="id_height" name="height" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.height.value }}">
+
+            <!-- Lifestyle Factors -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Lifestyle Factors</h2>
+                <div class="mb-4 {% if form.daily_diet.errors %}border border-red-500{% endif %}">
+                    <label for="id_typical_daily_diet" class="block text-sm font-medium text-gray-700">Daily Diet</label>
+                    <select id="id_typical_daily_diet" name="typical_daily_diet" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="Healthy">Healthy</option>
+                        <option value="Balanced">Balanced</option>
+                        <option value="Unhealthy">Unhealthy</option>
+                    </select>
+                </div>
+                <div class="mb-4 {% if form.physical_activity.errors %}border border-red-500{% endif %}">
+                    <label for="id_physical_activity" class="block text-sm font-medium text-gray-700">Physical Activity</label>
+                    <select id="id_physical_activity_frequency" name="physical_activity_frequency" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="Rarely or never">Rarely or never</option>
+                        <option value="Occasionally (1-2 times a week)">Occasionally (1-2 times a week)</option>
+                        <option value="Regularly (3 or more times a week)">Regularly (3 or more times a week)</option>
+                    </select>
+                </div>
+                <div class="mb-4 {% if form.tobacco_use.errors %}border border-red-500{% endif %}">
+                    <label for="id_tobacco_use" class="block text-sm font-medium text-gray-700">Tobacco Use</label>
+                    <input type="text" id="id_smoking_habits" name="smoking_habits" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.smoking_habits.value }}">
+                </div>
+                <div class="mb-4 {% if form.alcohol_consumption.errors %}border border-red-500{% endif %}">
+                    <label for="id_alcohol_consumption" class="block text-sm font-medium text-gray-700">Alcohol Consumption</label>
+                    <input type="text" id="id_alcohol_consumption" name="alcohol_consumption" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.alcohol_consumption.value }}">
+                </div>
+                <div class="mb-4 {% if form.recreational_drug_use.errors %}border border-red-500{% endif %}">
+                    <label for="id_recreational_drug_use" class="block text-sm font-medium text-gray-700">Recreational Drug Use</label>
+                    <input type="text" id="id_recreational_drug_use" name="recreational_drug_use" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.recreational_drug_use.value }}">
+                </div>
+                <div class="mb-4">
+                    <label for="id_stress_management_methods" class="block text-sm font-medium text-gray-700">Stress Management</label>
+                    <input type="text" id="id_stress_management" name="stress_management_methods" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.stress_management_methods.value }}">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_weight" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
-                <input type="number" id="id_weight" name="weight" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.weight.value }}">
+
+            <!-- Biometric Data -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Biometric Data</h2>
+                <div class="mb-4 {% if form.height.errors %}border border-red-500{% endif %}">
+                    <label for="id_height" class="block text-sm font-medium text-gray-700">Height (cm)</label>
+                    <input type="number" id="id_height" name="height" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.height.value }}">
+                </div>
+                <div class="mb-4 {% if form.weight.errors %}border border-red-500{% endif %}">
+                    <label for="id_weight" class="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                    <input type="number" id="id_weight" name="weight" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.weight.value }}">
+                </div>
+                <div class="mb-4 {% if form.blood_pressure.errors %}border border-red-500{% endif %}">
+                    <label for="id_blood_pressure" class="block text-sm font-medium text-gray-700">Blood Pressure</label>
+                    <input type="text" id="id_blood_pressure" name="blood_pressure" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.blood_pressure.value }}">
+                </div>
+                <div class="mb-4 {% if form.cholesterol_levels.errors %}border border-red-500{% endif %}">
+                    <label for="id_cholesterol_levels" class="block text-sm font-medium text-gray-700">Cholesterol Levels</label>
+                    <input type="text" id="id_cholesterol_levels" name="cholesterol_levels" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.cholesterol_levels.value }}">
+                </div>
+                <div class="mb-4 {% if form.blood_glucose_levels.errors %}border border-red-500{% endif %}">
+                    <label for="id_blood_glucose_levels" class="block text-sm font-medium text-gray-700">Blood Glucose Levels</label>
+                    <input type="text" id="id_blood_glucose_levels" name="blood_glucose_levels" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.blood_glucose_levels.value }}">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_bmi" class="block text-sm font-medium text-gray-700">BMI</label>
-                <input type="number" id="id_bmi" name="bmi" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.bmi.value }}">
+
+            <!-- Environmental Exposures -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Environmental Exposures</h2>
+                <div class="mb-4 {% if form.air_pollution.errors %}border border-red-500{% endif %}">
+                    <label for="id_air_pollution" class="block text-sm font-medium text-gray-700">Air Pollution Exposure</label>
+                    <input type="text" id="id_air_pollution" name="air_pollution" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.air_pollution.value }}">
+                </div>
+                <div class="mb-4 {% if form.occupational_hazards.errors %}border border-red-500{% endif %}">
+                    <label for="id_occupational_hazards" class="block text-sm font-medium text-gray-700">Occupational Hazards Exposure</label>
+                    <input type="text" id="id_occupational_hazards" name="occupational_hazards" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.occupational_hazards.value }}">
+                </div>
+                <div class="mb-4 {% if form.clean_drinking_water.errors %}border border-red-500{% endif %}">
+                    <label for="id_clean_drinking_water" class="block text-sm font-medium text-gray-700">Access to Clean Drinking Water</label>
+                    <input type="text" id="id_clean_drinking_water" name="clean_drinking_water" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.clean_drinking_water.value }}">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_vaccination_history" class="block text-sm font-medium text-gray-700">Vaccination History</label>
-                <textarea id="id_vaccination_history" name="vaccination_history" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.vaccination_history.value }}</textarea>
+
+            <!-- Genetic Factors -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Genetic Factors</h2>
+                <div class="mb-4 {% if form.genetic_conditions.errors %}border border-red-500{% endif %}">
+                    <label for="id_genetic_conditions" class="block text-sm font-medium text-gray-700">Genetic Conditions in Family History</label>
+                    <input type="text" id="id_genetic_conditions" name="genetic_conditions" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.genetic_conditions.value }}">
+                </div>
+                <div class="mb-4 {% if form.genetic_testing_results.errors %}border border-red-500{% endif %}">
+                    <label for="id_genetic_testing_results" class="block text-sm font-medium text-gray-700">Results of Genetic Testing</label>
+                    <input type="text" id="id_genetic_testing_results" name="genetic_testing_results" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.genetic_testing_results.value }}">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_previous_medications" class="block text-sm font-medium text-gray-700">Previous Medications</label>
-                <textarea id="id_previous_medications" name="previous_medications" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.previous_medications.value }}</textarea>
+
+            <!-- Behavioral Factors -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Behavioral Factors</h2>
+                <div class="mb-4 {% if form.medical_compliance.errors %}border border-red-500{% endif %}">
+                    <label for="id_medical_compliance" class="block text-sm font-medium text-gray-700">Adherence to Medical Recommendations</label>
+                    <select id="id_medical_compliance" name="medical_compliance" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="Very well">Very well</option>
+                        <option value="Moderately">Moderately</option>
+                        <option value="Not well">Not well</option>
+                    </select>
+                </div>
+                <div class="mb-4 {% if form.health_literacy.errors %}border border-red-500{% endif %}">
+                    <label for="id_health_literacy" class="block text-sm font-medium text-gray-700">Health Literacy Level</label>
+                    <select id="id_health_literacy" name="health_literacy" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="High">High</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_procedures" class="block text-sm font-medium text-gray-700">Procedures</label>
-                <textarea id="id_procedures" name="procedures" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.procedures.value }}</textarea>
+
+            <!-- Psychosocial Factors -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Psychosocial Factors</h2>
+                <div class="mb-4 {% if form.mental_health_diagnosis.errors %}border border-red-500{% endif %}">
+                    <label for="id_mental_health_diagnosis" class="block text-sm font-medium text-gray-700">Diagnosed Mental Health Conditions</label>
+                    <input type="text" id="id_mental_health_diagnosis" name="mental_health_diagnosis" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.mental_health_diagnosis.value }}">
+                </div>
+                <div class="mb-4 {% if form.social_support_network.errors %}border border-red-500{% endif %}">
+                    <label for="id_social_support_network" class="block text-sm font-medium text-gray-700">Social Support Network</label>
+                    <input type="text" id="id_social_support_network" name="social_support_network" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.social_support_network.value }}">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_hospitalizations" class="block text-sm font-medium text-gray-700">Hospitalizations</label>
-                <textarea id="id_hospitalizations" name="hospitalizations" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.hospitalizations.value }}</textarea>
+
+            <!-- Occupational Factors -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Occupational Factors</h2>
+                <div class="mb-4 {% if form.occupation.errors %}border border-red-500{% endif %}">
+                    <label for="id_occupation" class="block text-sm font-medium text-gray-700">Occupation</label>
+                    <input type="text" id="id_occupation" name="occupation" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.occupation.value }}">
+                </div>
+                <div class="mb-4 {% if form.work_stress.errors %}border border-red-500{% endif %}">
+                    <label for="id_work_stress" class="block text-sm font-medium text-gray-700">Work-Related Stress</label>
+                    <input type="text" id="id_work_stress" name="work_stress" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.work_stress.value }}">
+                </div>
             </div>
-            <div class="mb-4">
-                <label for="id_current_symptoms" class="block text-sm font-medium text-gray-700">Current Symptoms</label>
-                <textarea id="id_current_symptoms" name="current_symptoms" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.current_symptoms.value }}</textarea>
+
+            <!-- Screening Tests -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Screening Tests</h2>
+                <div class="mb-4 {% if form.last_checkup.errors %}border border-red-500{% endif %}">
+                    <label for="id_last_checkup" class="block text-sm font-medium text-gray-700">Last Medical Check-up</label>
+                    <input type="text" id="id_last_checkup" name="last_checkup" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.last_checkup.value }}">
+               </div>
+                <div class="mb-4 {% if form.cancer_screening.errors %}border border-red-500{% endif %}">
+                    <label for="id_cancer_screening" class="block text-sm font-medium text-gray-700">Cancer Screening History</label>
+                    <input type="text" id="id_cancer_screening" name="cancer_screening" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.cancer_screening.value }}">
+                </div>
             </div>
+
+            <!-- Geographic Location -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Geographic Location</h2>
+                <div class="mb-4 {% if form.residential_area.errors %}border border-red-500{% endif %}">
+                    <label for="id_residential_area" class="block text-sm font-medium text-gray-700">Residential Area (Urban/Rural)</label>
+                    <input type="text" id="id_residential_area" name="residential_area" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.residential_area.value }}">
+                </div>
+                <div class="mb-4 {% if form.access_to_healthcare.errors %}border border-red-500{% endif %}">
+                    <label for="id_access_to_healthcare" class="block text-sm font-medium text-gray-700">Access to Healthcare Facilities</label>
+                    <input type="text" id="id_access_to_healthcare" name="access_to_healthcare" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.access_to_healthcare.value }}">
+                </div>
+            </div>
+
+            <!-- Additional Comments -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-4">
+                <h2 class="text-lg font-semibold mb-2">Additional Comments</h2>
+                <textarea id="id_additional_comments" name="additional_comments" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ form.additional_comments.value }}</textarea>
+            </div>
+
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Submit</button>
         </form>
     </div>

@@ -9,7 +9,7 @@
 <body class="bg-gray-100">
     <div class="container mx-auto max-w-md p-4 mt-10">
         <h2 class="text-3xl font-bold mb-4">Sign Up</h2>
-        <form method="post">
+        <form method="post" action="{% url 'users:sign_up' %}">
             {% csrf_token %}
             <div class="mb-4">
                 <label for="id_username" class="block text-sm font-medium text-gray-700">Username:</label>

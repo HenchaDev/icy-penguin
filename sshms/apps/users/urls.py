@@ -11,10 +11,6 @@ urlpatterns = [
     path('complete-profile/', views.complete_profile, name='complete_profile'),
     path('profile/', login_required(views.view_profile, login_url='/users/login/'), name='profile'),
     path('logout/', views.logout, name='logout'),
-    path('edit_user_info/', views.edit_user_info, name='edit_user_info'),
-    path('save_user_info/', views.save_user_info, name='save_user_info'),
-    path('edit_med_info/', views.edit_med_info, name='edit_med_info'),
-    path('save_med_info/', views.save_med_info, name='save_med_info'),
-    path('edit_med_hist/', views.edit_med_hist, name='edit_med_hist'),
-    path('save_med_hist/', views.save_med_hist, name='save_med_hist'),
+    path('edit_demographic_info_form/', views.edit_demographic_info_form, name='edit_demographic_info_form'),
+    path('edit_demographic_info/', views.edit_demographic_info, name='edit_demographic_info'),
 ]

@@ -34,6 +34,7 @@ GOOGLE_API_KEY = 'AIzaSyCJpEqYUb55Lb2DnxhDlDnUZJO7J7pOZH0'
 
 INSTALLED_APPS = [
     "jazzmin",
+    "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -46,6 +47,8 @@ INSTALLED_APPS = [
     "apps.prediction",
     "apps.users",
 ]
+
+CRISPY_TEMPLATE_PACK = 'tailwind'
 
 LOGIN_REDIRECT_URL = 'home'
 

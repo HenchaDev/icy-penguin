@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from .forms import SignUpForm, UserLoginForm, ProfileForm
+from .forms import SignUpForm, UserLoginForm, ProfileForm, DemographicInfoForm
 from .models import UserProfile
 
 def sign_up(request):
@@ -14,7 +14,7 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('complete_profile')
+            return redirect('users:complete_profile')
     else:
         form = SignUpForm()
     return render(request, 'users/signup.html', {'form': form})
@@ -44,7 +44,7 @@ def complete_profile(request):
         form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             profile = form.save()
-            return redirect('profile')
+            return redirect('users:profile')
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'users/complete_profile.html', {'form': form})
@@ -61,80 +61,31 @@ def view_profile(request):
 def logout(request):
     return render(request, 'users/logout.html')
 
-@login_required
-def edit_user_info(request):
-    return render(request, 'users/edit_user_info_form.html')
 
 @login_required
-def save_user_info(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        
-        # Get the current user
-        user = request.user
-        
-        # Update the user's username and email
-        user.username = username
-        user.email = email
-        user.save()
-       
-        messages.success(request, 'User info updated successfully.')
-        return redirect('profile')
-    else:
-        return JsonResponse({'error': 'Method not allowed.'}, status=405)
-
-@login_required
-def edit_med_info(request):
+def edit_demographic_info_form(request):
     profile = request.user.userprofile
-    return render(request, 'users/edit_med_info_form.html', {'profile': profile})
+    form = DemographicInfoForm(instance=profile)
+    return render(request, 'users/demographic_info_form.html', {'form': form})
 
 @login_required
-def save_med_info(request):
-    if request.method == 'POST':
-        age = request.POST.get('age')
-        sex = request.POST.get('sex')
-        height = request.POST.get('height')
-        weight = request.POST.get('weight')
-        bmi = request.POST.get('bmi')
-        
-        profile = request.user.userprofile
-        
-        profile.age = age
-        profile.sex = sex
-        profile.height = height
-        profile.weight = weight
-        profile.bmi = bmi
-        profile.save()
-        
-        messages.success(request, 'Medical info updated successfully.')
-        return redirect('profile')
-    else:
-        return JsonResponse({'error': 'Method not allowed'})
-    
-@login_required
-def edit_med_hist(request):
-    profile = request.user.userprofile
-    return render(request, 'users/edit_med_hist_form.html')
+def edit_demographic_info(request):
+    profile = get_object_or_404(UserProfile, user=request.user)
 
-@login_required
-def save_med_hist(request):
     if request.method == 'POST':
-        vaccination_history = request.POST.get('vaccination_history')
-        previous_medications = request.POST.get('previous_medications')
-        procedures = request.POST.get('procedures')
-        hospitalizations = request.POST.get('hospitalizations')
-        current_symptoms = request.POST.get('current_symptoms')
-        
-        profile = request.user.userprofile
-        
-        profile.vaccination_history = vaccination_history
-        profile.previous_medications = previous_medications
-        profile.procedures = procedures
-        profile.hospitalizations = hospitalizations
-        profile.current_symptoms = current_symptoms
-        
-        messages.success(request, 'Medical history updated successfully.')
-        return redirect('profile')
+        form = DemographicInfoForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile = form.save()
+            return JsonResponse({
+                'success': True,
+                'age': profile.age,
+                'sex': profile.sex,
+                'ethnicity_race': profile.ethnicity_race,
+                'socioeconomic_status': profile.socioeconomic_status
+            })
+        else:
+            return JsonResponse({'success': False, 'message': 'Form is invalid'})
     else:
-        return JsonResponse({'error': 'Method not allowed.'})
+        form = DemographicInfoForm(instance=profile)
+
+    return render(request, 'users/demographic_info_form.html', {'form': form})

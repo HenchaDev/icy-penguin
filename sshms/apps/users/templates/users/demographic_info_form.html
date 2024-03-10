@@ -1,0 +1,58 @@
+
+
+<!-- Your HTML form -->
+<form id="demographic-info-form" method="post" action="{% url 'users:edit_demographic_info' %}" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for="id_age" class="block text-gray-700 text-sm font-bold mb-2">Age</label>
+        {{ form.age }}
+    </div>
+    <div class="mb-4">
+        <label for="id_gender" class="block text-gray-700 text-sm font-bold mb-2">Gender</label>
+        {{ form.sex }}
+    </div>
+    <div class="mb-4">
+        <label for="id_ethnicity_race" class="block text-gray-700 text-sm font-bold mb-2">Ethnicity / Race</label>
+        {{ form.ethnicity_race }}
+    </div>
+    <div class="mb-4">
+        <label for="id_socioeconomic_status" class="block text-gray-700 text-sm font-bold mb-2">Socioeconomic Status</label>
+        {{ form.socioeconomic_status }}
+    </div>
+    <div class="flex items-center justify-between">
+        <button id="save-button" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Save
+        </button>
+    </div>
+</form>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Function to handle form submission
+        $('#demographic-info-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Perform AJAX form submission
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Form submitted successfully
+                    closeForm();
+                    // You can also handle response data here if needed
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors if needed
+                }
+            });
+        });
+
+        // Function to close the form
+        function closeForm() {
+            $('#demographic-info-form').addClass('hidden');
+        }
+    });
+</script>
