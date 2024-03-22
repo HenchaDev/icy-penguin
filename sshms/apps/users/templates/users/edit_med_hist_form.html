@@ -1,0 +1,68 @@
+<form id="medical-history-form" action="{% url 'users:edit_med_hist' %}" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for="id_family_history_chronic_diseases" class="block text-gray-700 text-sm font-bold mb-2">Family History of Chronic Diseases:</label>
+        {{ form.family_history_chronic_diseases }}
+        {% if form.family_history_chronic_diseases.errors %}
+            <div class="text-red-500">{{ form.family_history_chronic_diseases.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <label for="id_diagnosed_chronic_conditions" class="block text-gray-700 text-sm font-bold mb-2">Diagnosed Chronic Conditions:</label>
+        {{ form.diagnosed_chronic_conditions }}
+        {% if form.diagnosed_chronic_conditions.errors %}
+            <div class="text-red-500">{{ form.diagnosed_chronic_conditions.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <label for="id_medications" class="block text-gray-700 text-sm font-bold mb-2">Medications:</label>
+        {{ form.medications }}
+        {% if form.medications.errors %}
+            <div class="text-red-500">{{ form.medications.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <label for="id_surgeries" class="block text-gray-700 text-sm font-bold mb-2">Surgeries:</label>
+        {{ form.surgeries }}
+        {% if form.surgeries.errors %}
+            <div class="text-red-500">{{ form.surgeries.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="flex items-center justify-between">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Save</button>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#medical-history-form').submit(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        $('#card-1 p:nth-child(2)').html(`<strong>Family History of Chronic Diseases:</strong> ${response.family_history_chronic_diseases}`);
+                        $('#card-1 p:nth-child(3)').html(`<strong>Diagnosed Chronic Conditions:</strong> ${response.diagnosed_chronic_conditions}`);
+                        $('#card-1 p:nth-child(4)').html(`<strong>Medications:</strong> ${response.medications}`);
+                        $('#card-1 p:nth-child(5)').html(`<strong>Surgeries:</strong> ${response.surgeries}`);
+
+                        closeForm();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        function closeForm() {
+            $('#medical-history-form').addClass('hidden');
+        }
+    });
+</script>

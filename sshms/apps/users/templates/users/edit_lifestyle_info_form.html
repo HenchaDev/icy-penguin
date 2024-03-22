@@ -1,0 +1,66 @@
+<form id="lifestyle-info-form" action="{% url 'users:edit_lifestyle_info' %}" class="bg-white shadow-md rounded px-8 pt-6 pb-6 mb-4">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for="id_typical_daily_diet" class="block text-gray-700 text-sm font-bold mb-2">Daily Diet:</label>
+        {{ form.typical_daily_diet }}
+    </div>
+    <div class="mb-4">
+        <label for="id_physical_activity" class="block text-gray-700 text-sm font-bold mb-2">Physical Activity:</label>
+        {{ form.physical_activity_frequency }}
+    </div>
+    <div class="mb-4">
+        <label for="id_smoking_habits" class="block text-gray-700 text-sm font-bold mb-2">Tobaco Use:</label>
+        {{ form.smoking_habits }}
+    </div>
+    <div class="mb-4">
+        <label for="id_alcohol_consumption" class="block text-gray-700 text-sm font-bold mb-2">Alcohol Consumption:</label>
+        {{ form.alcohol_consumption }}
+    </div>
+    <div class="mb-4">
+        <label for="id_recreational_drug_use" class="block text-gray-700 text-sm font-bold mb-2">Recreational Drug Use:</label>
+         {{ form.recreational_drug_use }}
+    </div>
+    <div class="mb-4">
+        <label for="id_stress_management_methods" class="block text-gray-700 text-sm font-bold mb-2">Stress Management:</label>
+        {{ form.stress_management_methods }}
+    </div>
+
+    <div class="flex items-center justify-between">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Save</button>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#lifestyle-info-form').submit(function(event) {
+            event.preventDefault();
+            $.ajax({ // Note the '.' before 'ajax'
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        $('#card-2 p:nth-child(2)').html(`Daily Diet: ${response.typical_daily_diet}`);
+                        $('#card-2 p:nth-child(3)').html(`Physical Activity: ${response.physical_activity_frequency}`);
+                        $('#card-2 p:nth-child(4)').html(`Tobacco Use: ${response.smoking_habits}`);
+                        $('#card-2 p:nth-child(5)').html(`Alcohol Consumption: ${response.alcohol_consumption}`);
+                        $('#card-2 p:nth-child(6)').html(`Recreational Drug Use: ${response.recreational_drug_use}`);
+                        $('#card-2 p:nth-child(7)').html(`Stress Management: ${response.stress_management_methods}`);
+                        closeForm();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        function closeForm() {
+            $('#lifestyle-info-form').addClass('hidden');
+        }
+    });
+</script>

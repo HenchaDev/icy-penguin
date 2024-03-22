@@ -1,5 +1,3 @@
-
-
 <!-- Your HTML form -->
 <form id="demographic-info-form" method="post" action="{% url 'users:edit_demographic_info' %}" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     {% csrf_token %}
@@ -41,11 +39,21 @@
                 data: $(this).serialize(),
                 success: function(response) {
                     // Form submitted successfully
-                    closeForm();
+                    if (response.success) {
+                        $('.card p:nth-child(2)').html(`<strong>Age:</strong> ${response.age}`);
+                        $('.card p:nth-child(3)').html(`<strong>Gender:</strong> ${response.sex}`);
+                        $('.card p:nth-child(4)').html(`<strong>Ethnicity/Race:</strong> ${response.ethnicity_race}`);
+                        $('.card p:nth-child(5)').html(`<strong>Socioeconomic Status:</strong> ${response.socioeconomic_status}`);
+
+                        closeForm();
+                    } else {
+                        alert(response.message);
+                    }
                     // You can also handle response data here if needed
                 },
                 error: function(xhr, status, error) {
                     // Handle errors if needed
+                    console.error('Error:', error);
                 }
             });
         });

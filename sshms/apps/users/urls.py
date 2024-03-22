@@ -13,4 +13,9 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('edit_demographic_info_form/', views.edit_demographic_info_form, name='edit_demographic_info_form'),
     path('edit_demographic_info/', views.edit_demographic_info, name='edit_demographic_info'),
+    path('edit_medical_hist_form/', views.edit_medical_hist_form, name='edit_medical_hist_form'),
+    path('edit_med_hist/', views.edit_med_hist, name='edit_med_hist'),
+    path('edit_lifestyle_info_form/', views.edit_lifestyle_info_form, name='edit_lifestyle_info_form'),
+    path('edit_lifestyle_info/', views.edit_lifestyle_info, name='edit_lifestyle_info')
+    
 ]

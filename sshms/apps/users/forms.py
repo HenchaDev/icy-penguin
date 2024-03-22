@@ -27,3 +27,13 @@ class DemographicInfoForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['age', 'sex', 'ethnicity_race', 'socioeconomic_status']   
+        
+class MedicalHistForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['family_history_chronic_diseases', 'diagnosed_chronic_conditions', 'medications', 'surgeries']
+        
+class LifestyleInfoForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['typical_daily_diet', 'physical_activity_frequency', 'smoking_habits', 'alcohol_consumption', 'recreational_drug_use', 'stress_management_methods']

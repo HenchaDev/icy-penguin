@@ -34,31 +34,31 @@
             </div>
         
             <!-- Medical History Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1500 transform translate-y-4">
+            <div id="card-1" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1500 transform translate-y-4">
                 <h2 class="text-lg font-semibold mb-4">Medical History</h2>
                 <p><span class="font-semibold">Family History of Chronic Diseases:</span> {{ profile.family_history_chronic_diseases }}</p>
                 <p><span class="font-semibold">Diagnosed Chronic Conditions:</span> {{ profile.diagnosed_chronic_conditions }}</p>
                 <p><span class="font-semibold">Current Medications:</span> {{ profile.medications }}</p>
                 <p><span class="font-semibold">Past Surgeries:</span> {{ profile.surgeries }}</p>
-                <!-- Include other medical history fields here -->
+                <div id="medical-history-form" class="hidden"></div>
                 <button id="edit-medical-history-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
             </div>
         
             <!-- Lifestyle Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2000 transform translate-y-4">
+            <div id="card-2" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2000 transform translate-y-4">
                 <h2 class="text-lg font-semibold mb-4">Lifestyle Factors</h2>
                 <p><span class="font-semibold">Daily Diet:</span> {{ profile.typical_daily_diet }}</p>
-                <p><span class="font-semibold">Physical Activity:</span> {{ profile.physical_activity }}</p>
+                <p><span class="font-semibold">Physical Activity:</span> {{ profile.physical_activity_frequency }}</p>
                 <p><span class="font-semibold">Tobacco Use:</span> {{ profile.smoking_habits }}</p>
                 <p><span class="font-semibold">Alcohol Consumption:</span> {{ profile.alcohol_consumption }}</p>
                 <p><span class="font-semibold">Recreational Drug Use:</span> {{ profile.recreational_drug_use }}</p>
                 <p><span class="font-semibold">Stress Management:</span> {{ profile.stress_management_methods }}</p>
-                <!-- Include other lifestyle factor fields here -->
+                <div id="lifestyle-info-form" class="hidden"></div>
                 <button id="edit-lifestyle-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
             </div>
         
             <!-- Biometric Data Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2500 transform translate-y-4">
+            <div id="card-3" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2500 transform translate-y-4">
                 <h2 class="text-lg font-semibold mb-4">Biometric Data</h2>
                 <p><span class="font-semibold">Height:</span> {{ profile.height }} cm</p>
                 <p><span class="font-semibold">Weight:</span> {{ profile.weight }} kg</p>
@@ -160,7 +160,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         const editDemographicInfoBtn = document.getElementById('edit-demographic-info-btn');
         const demographicInfoForm = document.getElementById('demographic-info-form');
-        const demographicInfoCard = document.getElementById('demographic-info-card');
 
         editDemographicInfoBtn.addEventListener('click', function() {
             fetch('/users/edit_demographic_info_form/')
@@ -184,11 +183,8 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                demographicInfoCard.querySelector('p:nth-child(2)').textContent = `Age: ${data.age}`;
-                                demographicInfoCard.querySelector('p:nth-child(3)').textContent = `Gender: ${data.sex}`;
-                                demographicInfoCard.querySelector('p:nth-child(4)').textContent = `Ethnicity/Race: ${data.ethnicity_race}`;
-                                demographicInfoCard.querySelector('p:nth-child(5)').textContent = `Socioeconomic Status: ${data.socioeconomic_status}`;
-                                demographicInfoForm.innerHTML = '';
+                                updateDemographicInfoCard(data);
+                                closeForm();
                             } else {
                                 alert(data.message);
                             }
@@ -198,9 +194,158 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
+
+        // Function to close the form
+        function closeForm() {
+            demographicInfoForm.innerHTML = '';
+        }
+
+        // Function to update the demographic information card
+        function updateDemographicInfoCard(data) {
+            const demographicInfoCard = document.querySelector('.card');
+            if (demographicInfoCard) {
+                demographicInfoCard.querySelector('p:nth-child(2)').textContent = `Age: ${data.age}`;
+                demographicInfoCard.querySelector('p:nth-child(3)').textContent = `Gender: ${data.sex}`;
+                demographicInfoCard.querySelector('p:nth-child(4)').textContent = `Ethinicity/Race: ${data.ethnicity_race}`;
+                demographicInfoCard.querySelector('p:nth-child(5)').textContent = `Socioeconomic Status: ${data.socioeconomic_status}`;
+            } else {
+                console.error('demographicInfoCard element not found');
+            }
+        }
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const editMedicalHistoryBtn = document.getElementById('edit-medical-history-btn');
+        const medicalHistoryForm = document.getElementById('medical-history-form');
+
+        editMedicalHistoryBtn.addEventListener('click', function() {
+            fetch('/users/edit_medical_hist_form/')
+            .then(response => response.text())
+            .then(formHTML => {
+                medicalHistoryForm.innerHTML = formHTML;
+                medicalHistoryForm.classList.remove('hidden');
+
+                const form =medicalHistoryForm.querySelector('form');
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+
+                    fetch('/users/edit_med_hist/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getTheCookie('csrftoken')
+                        },
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateMedicalHistCard(data);
+                            closeForm();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function closeForm() {
+            medicalHistoryForm.innerHTML = '';
+        }
+
+        function updateMedicalHistCard(data) {
+            const medicalHistoryCard = document.querySelector('#card-1');
+
+            if (medicalHistoryCard) {
+                medicalHistoryCard.querySelector('p:nth-child(2)').textContent = `Family History of Chronic Diseases: ${data.family_history_chronic_diseases}`;
+                medicalHistoryCard.querySelector('p:nth-child(3)').textContent = `Diagnosed Chronic Conditions: ${data.diagnosed_chronic_conditions}`;
+                medicalHistoryCard.querySelector('p:nth-child(4)').textContent = `Medications: ${data.medications}`;
+                medicalHistoryCard.querySelector('p:nth-child(5)').textContent = `Surgeries: ${data.surgeries}`;
+            } else {
+                console.error('medicalHistotyCard: Element not found.')
+            }
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const editLifestyleInfoBtn = document.getElementById('edit-lifestyle-info-btn');
+        const lifestyleInfoForm = document.getElementById('lifestyle-info-form');
+
+        editLifestyleInfoBtn.addEventListener('click', function() {
+            fetch('/users/edit_lifestyle_info_form/')
+            .then(response => response.text())
+            .then(formHTML => {
+                lifestyleInfoForm.innerHTML = formHTML;
+                lifestyleInfoForm.classList.remove('hidden');
+
+                const form = lifestyleInfoForm.querySelector('form');
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+
+                    fetch('/users/edit_lifestyle_info/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getTheCookie('csrftoken')
+                        },
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateLifestyleInfoCard(data);
+                            closeForm();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function closeForm() {
+            lifestyleInfoForm.innerHTML = '';
+        }
+
+        function updateLifestyleInfoCard(data) {
+            const lifestyleInfoCard = document.querySelector('#card-2');
+
+            if (lifestyleInfoCard) {
+                lifestyleInfoCard.querySelector('p:nth-child(2)').textContent = `Daily Diet: ${data.typical_daily_diet}`;
+                lifestyleInfoCard.querySelector('p:nth-child(3)').textContent = `Physical Activity: ${data.physical_activity_frequency}`;
+                lifestyleInfoCard.querySelector('p:nth-child(4)').textContent = `Tobbaco Use: ${data.smoking_habits}`;
+                lifestyleInfoCard.querySelector('p:nth-child(5)').textContent = `Alcohol Consumption: ${data.alcohol_consumption}`;
+                lifestyleInfoCard.querySelector('p:nth-child(6)').textContent = `Recreational Drug Use: ${data.recreational_drug_use}`;
+                lifestyleInfoCard.querySelector('p:nth-child(7)').textContent = `Stress Management: ${data.stress_management_methods}`;
+            } else {
+                console.error('lifeStyleInfoCard: Element not found.');
+            }
+        }
+    })
+
     function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function getTheCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
             const cookies = document.cookie.split(';');
