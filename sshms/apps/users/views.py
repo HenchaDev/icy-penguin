@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from .forms import LifestyleInfoForm, SignUpForm, UserLoginForm, ProfileForm, DemographicInfoForm, MedicalHistForm
+from .forms import BiometricDataForm, LifestyleInfoForm, SignUpForm, UserLoginForm, ProfileForm, DemographicInfoForm, MedicalHistForm
 from .models import UserProfile
 
 def sign_up(request):
@@ -148,3 +148,32 @@ def edit_lifestyle_info(request):
         form = LifestyleInfoForm(instance=profile)
         
     return render(request, 'users/edit_lifestyle_info_form.html', {'form': form})
+
+@login_required
+def edit_biometric_data_form(request):
+    profile = request.user.userprofile
+    form = BiometricDataForm(instance=profile)
+    return render(request, 'users/edit_biometric_data_form.html', {'form': form})
+
+@login_required
+def edit_biometric_data(request):
+    profile = get_object_or_404(UserProfile, user=request.user)
+    
+    if request.method == 'POST':
+        form = BiometricDataForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile = form.save()
+            return JsonResponse({
+                'success': True,
+                'height': profile.height,
+                'weight': profile.weight,
+                'blood_pressure': profile.blood_pressure,
+                'cholesterol_levels': profile.cholesterol_levels,
+                'blood_glucose_levels': profile.blood_glucose_levels
+            })
+        else:
+            return JsonResponse({'success': False, 'message': 'Form is invalid'})
+    else:
+        form = BiometricDataForm(instance=profile)
+    
+    return render(request, 'users/edit_biometric_data_form.html', {'form': form})

@@ -67,6 +67,7 @@
                 <p><span class="font-semibold">Blood Pressure:</span> {{ profile.blood_pressure }}</p>
                 <p><span class="font-semibold">Cholesterol Levels:</span> {{ profile.cholesterol_levels }}</p>
                 <p><span class="font-semibold">Blood Glucose Levels:</span> {{ profile.blood_glucose_levels }}</p>
+                <div id="biometric-data-form" class="hidden"></div>
                 <!-- Include other biometric data fields here -->
                 <button id="edit-biometric-data-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
             </div>
@@ -227,7 +228,7 @@
                 medicalHistoryForm.innerHTML = formHTML;
                 medicalHistoryForm.classList.remove('hidden');
 
-                const form =medicalHistoryForm.querySelector('form');
+                const form = medicalHistoryForm.querySelector('form');
                 form.addEventListener('submit', function(event) {
                     event.preventDefault();
                     const formData = new FormData(form);
@@ -328,6 +329,65 @@
                 lifestyleInfoCard.querySelector('p:nth-child(7)').textContent = `Stress Management: ${data.stress_management_methods}`;
             } else {
                 console.error('lifeStyleInfoCard: Element not found.');
+            }
+        }
+    })
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const editBiometricDataBtn = document.getElementById('edit-biometric-data-btn');
+        const biometricDataForm = document.getElementById('biometric-data-form');
+
+        editBiometricDataBtn.addEventListener('click', function() {
+            fetch('/users/edit_biometric_data_form/')
+            .then(response => response.text())
+            .then(formHTML => {
+                biometricDataForm.innerHTML = formHTML;
+                biometricDataForm.classList.remove('hidden');
+
+                const form = biometricDataForm.querySelector('form');
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+
+                    fetch('/users/edit_biometric_data/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateBiometricDataCard(data);
+                            closeForm();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error)
+                    });
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function closeForm() {
+            biometricDataForm.innerHTML = '';
+        }
+
+        function updateBiometricDataCard(data) {
+            const biometricDataCard = document.querySelector('#card-3');
+
+            if (biometricDataCard) {
+                biometricDataCard.querySelector('p:nth-child(2)').textContent = `Height: ${data.height}`;
+                biometricDataCard.querySelector('p:nth-child(3)').textContent = `Weight: ${data.weight}`;
+                biometricDataCard.querySelector('p:nth-child(4)').textContent = `Blood Pressure: ${data.blood_pressure}`;
+                biometricDataCard.querySelector('p:nth-child(5)').textContent = `Cholesterol: ${data.cholesterol_levels} `;
+                biometricDataCard.querySelector('p:nth-child(6)').textContent = `Blood Glucose Levels: ${data.blood_glucose_levels}`;
+            } else {
+                console.error('BiometricDataCard: Elements Not found.');
             }
         }
     })

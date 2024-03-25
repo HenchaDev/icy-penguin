@@ -37,3 +37,8 @@ class LifestyleInfoForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['typical_daily_diet', 'physical_activity_frequency', 'smoking_habits', 'alcohol_consumption', 'recreational_drug_use', 'stress_management_methods']
+        
+class BiometricDataForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['height', 'weight', 'blood_pressure', 'cholesterol_levels', 'blood_glucose_levels']

@@ -1,0 +1,61 @@
+<form id="biometric-data-form" method="post" action="{% url 'users:edit_biometric_data' %}" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for="id_height" class="block text-gray-700 text-sm font-bold mb-2">Height:</label>
+        {{ form.height }}
+    </div>
+    <div class="mb-4">
+        <label for="id_weight" class="block text-gray-700 text-sm font-bold mb-2">Weight:</label>
+        {{ form.weight }}
+    </div>
+    <div class="mb-4">
+        <label for="id_blood_pressure" class="block text-gray-700 text-sm font-bold mb-2">Blood Pressure:</label>
+        {{ form.blood_pressure }}
+    </div>
+    <div class="mb-4">
+        <label for="id_cholesterol_levels" class="block text-gray-700 text-sm font-bold mb-2">Cholesterol Level:</label>
+        {{ form.cholesterol_levels }}
+    </div>
+    <div class="mb-4">
+        <label for="id_blood_glucose_levels" class="block text-gray-700 text-sm font-bold mb-2">Blood Glucose Levels:</label>
+        {{ form.blood_glucose_levels }}
+    </div>
+    <div class="flex items-center justify-between">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Save</button>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#biometric-data-form').submit(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                       $('#card-3 p:nth-child(2)').html(`Height: ${response.height}`);
+                       $('#card-3 p:nth-child(3)').html(`Weight: ${response.weight}`);
+                       $('#card-3 p:nth-child(4)').html(`Blood Pressure: ${response.blood_pressure}`);
+                       $('#card-3 p:nth-child(5)').html(`Cholesterol Levels: ${response.cholesterol_levels}`);
+                       $('#card-3 p:nth-child(6)').html(`Blood Glucose Levels: ${response.blood_glucose_levels}`);
+
+                       closeForm();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        function closeForm() {
+            $('#biometric-data-form').addClass('hidden');
+        }
+    });
+</script>
