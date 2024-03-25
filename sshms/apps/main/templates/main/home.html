@@ -10,7 +10,7 @@
     <body class="bg-gray-100">
         <nav class="bg-gray-800 p-4 flex justify-between items-center text-white">
             <div class="">
-                <span class="text-xl font-bold">Welcome {{ request.user.username }}</span>
+                <span class="text-xl font-bold">Welcome</span>
                 
             </div>
             <div>
@@ -20,7 +20,7 @@
         <div class="container mx-auto mt-8">
             <div class="grid grid-cols-3 gap-4">
                 <div class="col-span-2">
-                    <h1 class="text-xl font-bold mb-4">Main Content</h1>
+                    <h1 class="text-xl font-bold mb-4">Hello {{ request.user.username }}</h1>
                     {% block content %}
                     {% endblock %}
                 </div>
