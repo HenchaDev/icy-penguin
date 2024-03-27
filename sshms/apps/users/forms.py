@@ -42,3 +42,14 @@ class BiometricDataForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['height', 'weight', 'blood_pressure', 'cholesterol_levels', 'blood_glucose_levels']
+        
+class EnvironmentalFactorsForm(forms.Form):
+    air_pollution_exposure = forms.BooleanField(required=False)
+    occupational_hazards = forms.BooleanField(required=False)
+    clean_drinking_water_access = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['air_pollution_exposure'].widget = forms.Select(choices=[(True, 'Yes'), (False, 'No')])
+        self.fields['occupational_hazards'].widget = forms.Select(choices=[(True, 'Yes'), (False, 'No')])
+        self.fields['clean_drinking_water_access'].widget = forms.Select(choices=[(True, 'Yes'), (False, 'No')])

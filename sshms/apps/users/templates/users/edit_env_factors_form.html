@@ -1,0 +1,65 @@
+{% load widget_tweaks %}
+
+<form id="env-factors-form" action="{% url 'users:edit_env_factors' %}" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for="id_air_pollution_exposure" class="block text-gray-700 text-sm font-bold mb-2">Air Pollution Exposure:</label>
+        <div class="relative">
+            {{ form.air_pollution_exposure|addclass:"block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" }}
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+        </div>
+    </div>
+    <div class="mb-4">
+        <label for="id_occupational_hazards" class="block text-gray-700 text-sm font-bold mb-2">Occupational Hazards:</label>
+        <div class="relative">
+            {{ form.occupational_hazards|addclass:"block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" }}
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+        </div>
+    </div>
+    <div class="mb-4">
+        <label for="id_clean_drinking_water_access" class="block text-gray-700 text-sm font-bold mb-2">Access to clean drinking water:</label>
+        <div class="relative">
+            {{ form.clean_drinking_water_access|addclass:"block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" }}
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#env-factors-form').submit(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        $('#card-4 p:nth-child(2)').html(`Air Pollution Exposure: ${response.air_pollution_exposure}`);
+                        $('#card-4 p:nth-child(3)').html(`Occupation Hazzards: ${response.occupational_hazards}`);
+                        $('#card-4 p:nth-child(4)').html(`Access to clean drinking water: ${response.clean_drinking_water_access}`);
+
+                        closeForm();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        function closeForm() {
+            $('#env-factors-form').addClass('hidden');
+        }
+    });
+</script>

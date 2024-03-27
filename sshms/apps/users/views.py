@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from .forms import BiometricDataForm, LifestyleInfoForm, SignUpForm, UserLoginForm, ProfileForm, DemographicInfoForm, MedicalHistForm
+from .forms import EnvironmentalFactorsForm, BiometricDataForm, LifestyleInfoForm, SignUpForm, UserLoginForm, ProfileForm, DemographicInfoForm, MedicalHistForm
 from .models import UserProfile
 
 def sign_up(request):
@@ -176,4 +176,28 @@ def edit_biometric_data(request):
     else:
         form = BiometricDataForm(instance=profile)
     
-    return render(request, 'users/edit_biometric_data_form.html', {'form': form})
+    return render(request, 'users/edit_biometric_data_form.html', {'form': form})\
+ 
+@login_required
+def edit_env_factors_form(request):
+    return render(request, 'users/edit_env_factors_form.html', {'form': EnvironmentalFactorsForm()})
+
+@login_required
+def edit_env_factors(request):
+    profile = get_object_or_404(UserProfile, user=request.user)
+
+    if request.method == 'POST':
+        form = EnvironmentalFactorsForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile = form.save()
+            return JsonResponse({
+                'success': True,
+                'air_pollution_exposure': profile.air_pollution_exposure,
+                'occupational_hazards': profile.occupational_hazards,
+                'clean_drinking_water_access': profile.clean_drinking_water_access
+            })
+        else:
+            return JsonResponse({'success': False, 'message': 'Form is invalid!'})
+    else:
+        form = EnvironmentalFactorsForm(instance=profile)
+        return render(request, 'users/edit_env_factors_form.html', {'form': form})

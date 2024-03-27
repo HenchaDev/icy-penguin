@@ -19,4 +19,6 @@ urlpatterns = [
     path('edit_lifestyle_info/', views.edit_lifestyle_info, name='edit_lifestyle_info'),
     path('edit_biometric_data/', views.edit_biometric_data, name='edit_biometric_data'),
     path('edit_biometric_data_form/', views.edit_biometric_data_form, name='edit_biometric_data_form'),
+    path('edit_env_factors/', views.edit_env_factors, name='edit_env_factors'),
+    path('edit_env_factors_form/', views.edit_env_factors_form, name='edit_env_factors_form'),    
 ]

@@ -33,6 +33,7 @@ GOOGLE_API_KEY = 'AIzaSyCJpEqYUb55Lb2DnxhDlDnUZJO7J7pOZH0'
 # Application definition
 
 INSTALLED_APPS = [
+    "widget_tweaks",
     "jazzmin",
     "crispy_forms",
     "django.contrib.admin",

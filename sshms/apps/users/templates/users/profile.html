@@ -73,13 +73,14 @@
             </div>
         
             <!-- Environmental Exposures Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-3000 transform translate-y-4">
+            <div id="card-4" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-3000 transform translate-y-4">
                 <h2 class="text-lg font-semibold mb-4">Environmental Exposures</h2>
                 <p><span class="font-semibold">High Levels of Air Pollution:</span> {{ profile.air_pollution_exposure }}</p>
                 <p><span class="font-semibold">Occupational Hazards:</span> {{ profile.occupational_hazards }}</p>
                 <p><span class="font-semibold">Access to Clean Drinking Water:</span> {{ profile.clean_drinking_water_access }}</p>
+                <div id="env-factors-form" class="hidden"></div>
                 <!-- Include other environmental exposure fields here -->
-                <button id="edit-environmental-exposures-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                <button id="edit-env-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
             </div>
         
             <!-- Genetic Factors Card -->
@@ -391,6 +392,61 @@
             }
         }
     })
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const editEnvFactorsBtn = document.getElementById('edit-env-factors-btn');
+        const envFactorsForm = document.getElementById('env-factors-form');
+
+        editEnvFactorsBtn.addEventListener('click', function() {
+            fetch('/users/edit_env_factors_form/')
+            .then(response => response.text())
+            .then(formHTML => {
+                envFactorsForm.innerHTML = formHTML;
+                envFactorsForm.classList.remove('hidden');
+
+                const form = envFactorsForm.querySelector('form');
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+
+                    fetch('/users/edit_env_factors/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            updateEnvFactorsCard(data);
+                            closeForm();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function closeForm(){
+            envFactorsForm.innerHTML = '';
+        }
+
+        function updateEnvFactorsCard(data) {
+            const envFactorsCard = document.querySelector('#card-4');
+
+            if (envFactorsCard) {
+                envFactorsCard.querySelector('p:nth-child(2)').textContent = `Air Pollution Exposure: ${data.air_pollution_exposure}`;
+                envFactorsCard.querySelector('p:nth-child(3)').textContent = `Occupational Hazards: ${data.occupational_hazards}`;
+                envFactorsCard.querySelector('p:nth-child(4)').textContent = `Access To Clean Drinking Water: ${data.clean_drinking_water_access}`;
+            } else {
+                console.error('EnvFactorsCards:  Element not found.')
+            }
+        }
+    });
 
     function getCookie(name) {
         let cookieValue = null;
