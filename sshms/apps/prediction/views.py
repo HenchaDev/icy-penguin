@@ -3,6 +3,7 @@ from django.http import JsonResponse
 import google.generativeai as genai
 from django.conf import settings
 from apps.users.models import UserProfile
+from .models import Prediction
 
 # Create your views here.
 def generate_text(request):
@@ -33,6 +34,12 @@ def generate_text(request):
         model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(prompt)
         generated_text = response.text
+        
+        prediction = Prediction.objects.create(
+            user = request.user,
+            input_data=input_prompt,
+            generated_text=generated_text
+        )
 
         return JsonResponse({'response': generated_text})
     else:

@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .forms import EnvironmentalFactorsForm, BiometricDataForm, LifestyleInfoForm, SignUpForm, UserLoginForm, ProfileForm, DemographicInfoForm, MedicalHistForm
 from .models import UserProfile
+from apps.prediction.models import Prediction
 
 def sign_up(request):
     if request.method == 'POST':
@@ -56,7 +57,13 @@ def view_profile(request):
         profile = request.user.userprofile
     except UserProfile.DoesNotExist:
         profile = None
-    return render(request, 'users/profile.html', {'profile': profile})
+        
+    user_predictions = request.user.predictions.all()
+    context = {
+        'profile': profile,
+        'predictions': user_predictions,
+    }
+    return render(request, 'users/profile.html', context)
 
 def logout(request):
     return render(request, 'users/logout.html')

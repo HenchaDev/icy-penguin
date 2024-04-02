@@ -1,57 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Homepage</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Custom styles for the navbar */
-    .navbar-main {
-      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    }
-    .navbar-brand {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-    .nav-link {
-      font-weight: 500;
-      transition: all 0.2s ease-in-out;
-    }
-    .nav-link:hover {
-      color: #fff;
-      transform: scale(1.1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the navbar */
+        .navbar-main {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
-  <nav class="navbar-main flex justify-between items-center px-8 py-4 text-white">
-    <div class="navbar-brand">
-      Welcome
-    </div>
-    <div class="flex space-x-6">
-      <a href="{% url 'main:home' %}" class="nav-link">Home</a>
-      <a href="{% url 'users:profile' %}" class="nav-link">View Profile</a>
-      <a href="#" class="nav-link">About</a>
-      <a href="#" class="nav-link">Contact</a>
-    </div>
-  </nav>
-
-  <div class="container mx-auto mt-8">
-    <div class="grid grid-cols-3 gap-4">
-      <div class="col-span-2">
-        <h1 class="text-xl font-bold mb-4">Hello {{ request.user.username }}</h1>
-        {% block content %} {% endblock %}
-      </div>
-      <div>
-        <div class="bg-gray-200 p-4 rounded">
-          <h2 class="text-xl-font-semibold mb-2">Predictions</h2>
-          <a href="{% url 'prediction:generate_texts' %}" class="block px-4 py-2 rounded bg-green-500 hover:bg-green-600 text-white">Go to Predictions</a>
+    <nav class="navbar-main flex justify-between items-center px-8 py-4 text-white">
+        <div class="navbar-brand">Welcome</div>
+        <div class="flex space-x-6">
+            <a href="{% url 'main:home' %}" class="nav-link">Home</a>
+            <a href="{% url 'users:profile' %}" class="nav-link">View Profile</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="#" class="nav-link">Contact</a>
         </div>
-      </div>
+    </nav>
+    <div class="container mx-auto mt-8">
+        <div class="grid grid-cols-3 gap-4">
+            <div class="col-span-2">
+                <h1 class="text-xl font-bold mb-4">Hello {{ request.user.username }}</h1>
+                {% block content %}{% endblock %}
+            </div>
+            <div>
+                <div class="bg-gray-200 p-4 rounded mb-4">
+                    <h2 class="text-xl font-semibold mb-2">Predictions</h2>
+                    <a href="{% url 'prediction:generate_texts' %}" class="block px-4 py-2 rounded bg-green-500 hover:bg-green-600 text-white">Go to Predictions</a>
+                </div>
+                {% if predictions %}
+                <div class="bg-gray-200 p-4 rounded">
+                    <h2 class="text-xl font-semibold mb-4">Previous Predictions</h2>
+                    {% for prediction in predictions %}
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold">{{ prediction.created_at }}</h3>
+                        <p class="bg-gray-300 p-2 rounded">{{ prediction.generated_text|linebreaksbr }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
 </body>
 </html>

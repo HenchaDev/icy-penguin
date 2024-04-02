@@ -76,7 +76,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Medical History</h2>
-                    <button id="medical-history-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="medical-history-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Family History of Chronic Diseases:</span> {{ profile.family_history_chronic_diseases }}</p>
@@ -92,7 +92,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Lifestyle Factors</h2>
-                    <button id="lifestyle-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="lifestyle-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Daily Diet:</span> {{ profile.typical_daily_diet }}</p>
@@ -110,7 +110,7 @@
             <div class="card-1 bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Biometric Data</h2>
-                    <button id="biometric-data-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="biometric-data-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Height:</span> {{ profile.height }} cm</p>
@@ -127,7 +127,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Environmental Exposures</h2>
-                    <button id="environmental-exposures-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="environmental-exposures-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">High Levels of Air Pollution:</span> {{ profile.air_pollution_exposure }}</p>
@@ -142,7 +142,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Genetic Factors</h2>
-                    <button id="genetic-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="genetic-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Genetic Conditions in Family History:</span> {{ profile.genetic_conditions }}</p>
@@ -157,7 +157,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Behavioral Factors</h2>
-                    <button id="behavioral-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="behavioral-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Adherence to Medical Recommendations:</span> {{ profile.medical_compliance }}</p>
@@ -171,7 +171,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Psychosocial Factors</h2>
-                    <button id="psychosocial-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="psychosocial-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Diagnosed Mental Health Conditions:</span> {{ profile.mental_health_diagnosis }}</p>
@@ -185,7 +185,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Occupational Factors</h2>
-                    <button id="occupational-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="occupational-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Type of Work:</span> {{ profile.occupation }}</p>
@@ -199,7 +199,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Screening Tests</h2>
-                    <button id="screening-tests-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="screening-tests-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Last Medical Check-up:</span> {{ profile.last_checkup }}</p>
@@ -213,7 +213,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Geographic Location</h2>
-                    <button id="geographic-location-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="geographic-location-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Residence:</span> {{ profile.residencial_area }}</p>
@@ -227,7 +227,7 @@
             <div class="card bg-white rounded-lg shadow-md">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold text-gray-800">Additional Comments</h2>
-                    <button id="additional-comments-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="additional-comments-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Other Relevant Information:</span> {{ profile.additional_comments }}</p>
@@ -255,84 +255,84 @@
     document.getElementById('medical-history-toggle').addEventListener('click', function() {
         const content = document.getElementById('medical-history-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Lifestyle Factors Toggle
     document.getElementById('lifestyle-factors-toggle').addEventListener('click', function() {
         const content = document.getElementById('lifestyle-factors-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Biometric Data Toggle
     document.getElementById('biometric-data-toggle').addEventListener('click', function() {
         const content = document.getElementById('biometric-data-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Environmental Exposures Toggle
     document.getElementById('environmental-exposures-toggle').addEventListener('click', function() {
         const content = document.getElementById('environmental-exposures-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Genetic Factors Toggle
     document.getElementById('genetic-factors-toggle').addEventListener('click', function() {
         const content = document.getElementById('genetic-factors-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Behavioral Factors Toggle
     document.getElementById('behavioral-factors-toggle').addEventListener('click', function() {
         const content = document.getElementById('behavioral-factors-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Psychosocial Factors Toggle
     document.getElementById('psychosocial-factors-toggle').addEventListener('click', function() {
         const content = document.getElementById('psychosocial-factors-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Occupational Factors Toggle
     document.getElementById('occupational-factors-toggle').addEventListener('click', function() {
         const content = document.getElementById('occupational-factors-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Screening Tests Toggle
     document.getElementById('screening-tests-toggle').addEventListener('click', function() {
         const content = document.getElementById('screening-tests-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Geographic Location Toggle
     document.getElementById('geographic-location-toggle').addEventListener('click', function() {
         const content = document.getElementById('geographic-location-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
     // Additional Comments Toggle
     document.getElementById('additional-comments-toggle').addEventListener('click', function() {
         const content = document.getElementById('additional-comments-content');
         content.classList.toggle('hidden');
-        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+        this.classList.toggle('rotate');
     });
 
 
     document.addEventListener("DOMContentLoaded", function() {
         const cards = document.querySelectorAll('.card');
         cards.forEach((card, index) => {
-            card.style.transitionDelay = `${index * 200}ms`;
+            card.style.transitionDelay = `${index * 100}ms`;
             card.classList.remove('translate-y-4');
         });
     });
