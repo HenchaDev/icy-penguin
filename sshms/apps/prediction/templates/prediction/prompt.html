@@ -25,9 +25,7 @@
     <script>
         document.getElementById('generate-text-form').addEventListener('submit', function(event) {
             event.preventDefault();
-
             const form = new FormData(this);
-
             fetch('', {
                 method: 'POST',
                 body: form,
@@ -40,16 +38,40 @@
             .then(data => {
                 console.log('Response from the server:', data);
                 console.log('Generated text:', data.response);
-                document.getElementById('response-area').innerHTML = `
+        
+                // Split the response into sections
+                const sections = data.response.split('\n');
+        
+                // Create HTML elements for each section
+                const outputHTML = `
                     <div class="bg-white p-4 rounded-lg shadow-md">
-                      <h2 class="text-xl text-white rounded-lg bg-green-500 font-semibold mb-4">Your Prediction:</h2> 
-                      <p>${data.response}</p> 
+                        <h2 class="block px-4 py-2 rounded bg-green-500 hover:bg-green-600 text-white">Your Prediction:</h2>
+                        ${sections.map(section => `
+                            <div class="mb-4">
+                                <h3 class="text-lg font-semibold mb-2">${section.split(':')[0]}:</h3>
+                                <p>${section.split(':')[1].trim()}</p>
+                            </div>
+                        `).join('')}
+                        <button id="more-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Need more info about this? Click here</button>
+                        <div id="more-info" class="hidden mt-4">
+                            <p>${data.response.replace(/\n/g, '<br>')}</p>
+                        </div>
                     </div>
                 `;
+        
+                document.getElementById('response-area').innerHTML = outputHTML;
+        
+                const moreInfoBtn = document.getElementById('more-info-btn');
+                const moreInfo = document.getElementById('more-info');
+        
+                moreInfoBtn.addEventListener('click', () => {
+                    moreInfo.classList.toggle('hidden');
+                    moreInfoBtn.textContent = moreInfo.classList.contains('hidden') ? 'Need more info about this? Click here' : 'Hide details';
+                });
             })
             .catch(error => console.error('Error:', error))
         });
-    </script>
+        </script>
 </body>
 </html>
 {% endblock %}

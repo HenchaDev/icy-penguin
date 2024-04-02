@@ -1,6 +1,9 @@
 {% extends 'main/home.html' %}
 
+{% load static %}
+
 {% block content %}
+
 
 
 <!DOCTYPE html>
@@ -11,8 +14,38 @@
     <title>User Profile</title>
     <!-- Include Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card {
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown-icon{
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #4285f4;
+        }
+        .dropdown-icon.rotate{
+            transform: rotate(180deg);
+        }
+        .navbar{
+            background-color: rgba(15, 20, 29, 0.877);
+            background-image: url("{% static 'users/images/hospital-1.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            color: white;
+            border-radius: 8px;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 font-sans">
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-8">
             <a href="{% url 'main:home' %}" class="inline-block px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">Home</a>
@@ -23,126 +56,184 @@
         </div>
         
         {% if profile %}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Demographic Information Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1000 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Demographic Information</h2>
-                <p><span class="font-semibold">Age:</span> {{ profile.age }}</p>
-                <p><span class="font-semibold">Gender:</span> {{ profile.sex }}</p>
-                <p><span class="font-semibold">Ethnicity/Race:</span> {{ profile.ethnicity_race }}</p>
-                <p><span class="font-semibold">Socioeconomic Status:</span> {{ profile.socioeconomic_status }}</p>
-                <div id="demographic-info-form" class="hidden"></div>
-                <button id="edit-demographic-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold">Demographic Information</h2>
+                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                </div>
+                <div id="demographic-info-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Age:</span> {{ profile.age }}</p>
+                    <p><span class="font-semibold text-gray-600">Gender:</span> {{ profile.sex }}</p>
+                    <p><span class="font-semibold text-gray-600">Ethnicity/Race:</span> {{ profile.ethnicity_race }}</p>
+                    <p><span class="font-semibold text-gray-600">Socioeconomic Status:</span> {{ profile.socioeconomic_status }}</p>
+                    <div id="demographic-info-form" class="hidden"></div>
+                    <button id="edit-demographic-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
-        
-            <!-- Medical History Card -->
-            <div id="card-1" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-1500 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Medical History</h2>
-                <p><span class="font-semibold">Family History of Chronic Diseases:</span> {{ profile.family_history_chronic_diseases }}</p>
-                <p><span class="font-semibold">Diagnosed Chronic Conditions:</span> {{ profile.diagnosed_chronic_conditions }}</p>
-                <p><span class="font-semibold">Current Medications:</span> {{ profile.medications }}</p>
-                <p><span class="font-semibold">Past Surgeries:</span> {{ profile.surgeries }}</p>
-                <div id="medical-history-form" class="hidden"></div>
-                <button id="edit-medical-history-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Medical History</h2>
+                    <button id="medical-history-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="medical-history-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Family History of Chronic Diseases:</span> {{ profile.family_history_chronic_diseases }}</p>
+                    <p><span class="font-semibold text-gray-600">Current Diseases:</span> {{ profile.diagnosed_chronic_conditions }}</p>
+                    <p><span class="font-semibold text-gray-600">Current Medications:</span> {{ profile.medications }}</p>
+                    <p><span class="font-semibold text-gray-600">Recent/Past Surgeries:</span> {{ profile.surgeries }}</p>
+                    <div id="medical-history-form" class="hidden"></div>
+                    <button id="edit-medical-history-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Lifestyle Factors Card -->
-            <div id="card-2" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2000 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Lifestyle Factors</h2>
-                <p><span class="font-semibold">Daily Diet:</span> {{ profile.typical_daily_diet }}</p>
-                <p><span class="font-semibold">Physical Activity:</span> {{ profile.physical_activity_frequency }}</p>
-                <p><span class="font-semibold">Tobacco Use:</span> {{ profile.smoking_habits }}</p>
-                <p><span class="font-semibold">Alcohol Consumption:</span> {{ profile.alcohol_consumption }}</p>
-                <p><span class="font-semibold">Recreational Drug Use:</span> {{ profile.recreational_drug_use }}</p>
-                <p><span class="font-semibold">Stress Management:</span> {{ profile.stress_management_methods }}</p>
-                <div id="lifestyle-info-form" class="hidden"></div>
-                <button id="edit-lifestyle-info-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Lifestyle Factors</h2>
+                    <button id="lifestyle-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="lifestyle-factors-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Daily Diet:</span> {{ profile.typical_daily_diet }}</p>
+                    <p><span class="font-semibold text-gray-600">Physical Activity:</span> {{ profile.physical_activity_frequency }}</p>
+                    <p><span class="font-semibold text-gray-600">Tobacco Use:</span> {{ profile.smoking_habits }}</p>
+                    <p><span class="font-semibold text-gray-600">Alcohol Consumption:</span> {{ profile.alcohol_consumption }}</p>
+                    <p><span class="font-semibold text-gray-600">Recreational Drug Use:</span> {{ profile.recreational_drug_use }}</p>
+                    <p><span class="font-semibold text-gray-600">Stress Management:</span> {{ profile.stress_management_methods }}</p>
+                    <div id="lifestyle-factors-form" class="hidden"></div>
+                    <button id="edit-lifestyle-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Biometric Data Card -->
-            <div id="card-3" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-2500 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Biometric Data</h2>
-                <p><span class="font-semibold">Height:</span> {{ profile.height }} cm</p>
-                <p><span class="font-semibold">Weight:</span> {{ profile.weight }} kg</p>
-                <p><span class="font-semibold">Blood Pressure:</span> {{ profile.blood_pressure }}</p>
-                <p><span class="font-semibold">Cholesterol Levels:</span> {{ profile.cholesterol_levels }}</p>
-                <p><span class="font-semibold">Blood Glucose Levels:</span> {{ profile.blood_glucose_levels }}</p>
-                <div id="biometric-data-form" class="hidden"></div>
-                <!-- Include other biometric data fields here -->
-                <button id="edit-biometric-data-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card-1 bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Biometric Data</h2>
+                    <button id="biometric-data-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="biometric-data-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Height:</span> {{ profile.height }} cm</p>
+                    <p><span class="font-semibold text-gray-600">Weight:</span> {{ profile.weight }} kg</p>
+                    <p><span class="font-semibold text-gray-600">Blood Pressure:</span> {{ profile.blood_pressure }}</p>
+                    <p><span class="font-semibold text-gray-600">Cholesterol Levels:</span> {{ profile.cholesterol_levels }}</p>
+                    <p><span class="font-semibold text-gray-600">Blood Glucose Levels:</span> {{ profile.blood_glucose_levels }}</p>
+                    <div id="biometric-data-form" class="hidden"></div>
+                    <button id="edit-biometric-data-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Environmental Exposures Card -->
-            <div id="card-4" class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-3000 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Environmental Exposures</h2>
-                <p><span class="font-semibold">High Levels of Air Pollution:</span> {{ profile.air_pollution_exposure }}</p>
-                <p><span class="font-semibold">Occupational Hazards:</span> {{ profile.occupational_hazards }}</p>
-                <p><span class="font-semibold">Access to Clean Drinking Water:</span> {{ profile.clean_drinking_water_access }}</p>
-                <div id="env-factors-form" class="hidden"></div>
-                <!-- Include other environmental exposure fields here -->
-                <button id="edit-env-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Environmental Exposures</h2>
+                    <button id="environmental-exposures-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="environmental-exposures-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">High Levels of Air Pollution:</span> {{ profile.air_pollution_exposure }}</p>
+                    <p><span class="font-semibold text-gray-600">Occupational Hazards:</span> {{ profile.occupational_hazards }}</p>
+                    <p><span class="font-semibold text-gray-600">Access to Clean Drinking Water:</span> {{ profile.clean_drinking_water_access }}</p>
+                    <div id="environmental-exposures-form" class="hidden"></div>
+                    <button id="edit-environmental-exposures-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Genetic Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-3500 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Genetic Factors</h2>
-                <p><span class="font-semibold">Genetic Conditions in Family History:</span> {{ profile.genetic_conditions }}</p>
-                <p><span class="font-semibold">Genetic Testing Results:</span> {{ profile.genetic_testing_results }}</p>
-                <!-- Include other genetic factor fields here -->
-                <button id="edit-genetic-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Genetic Factors</h2>
+                    <button id="genetic-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="genetic-factors-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Genetic Conditions in Family History:</span> {{ profile.genetic_conditions }}</p>
+                    <p><span class="font-semibold text-gray-600">Genetic Testing Results:</span> {{ profile.genetic_testing_results }}</p>
+                    <div id="genetic-factors-form" class="hidden"></div>
+                    <button id="edit-genetic-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
+        
             <!-- Behavioral Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-4000 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Behavioral Factors</h2>
-                <p><span class="font-semibold">Adherence to Medical Recommendations:</span> {{ profile.medical_compliance }}</p>
-                <p><span class="font-semibold">Health Literacy Level:</span> {{ profile.health_literacy }}</p>
-                <!-- Include other behavioral factor fields here -->
-                <button id="edit-behavioral-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Behavioral Factors</h2>
+                    <button id="behavioral-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="behavioral-factors-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Adherence to Medical Recommendations:</span> {{ profile.medical_compliance }}</p>
+                    <p><span class="font-semibold text-gray-600">Health Literacy Level:</span> {{ profile.health_literacy }}</p>
+                    <div id="behavioral-factors-form" class="hidden"></div>
+                    <button id="edit-behavioral-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Psychosocial Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-4500 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Psychosocial Factors</h2>
-                <p><span class="font-semibold">Diagnosed Mental Health Conditions:</span> {{ profile.mental_health_diagnosis }}</p>
-                <p><span class="font-semibold">Social Support Network:</span> {{ profile.social_support_network }}</p>
-                <!-- Include other psychosocial factor fields here -->
-                <button id="edit-psychosocial-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Psychosocial Factors</h2>
+                    <button id="psychosocial-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="psychosocial-factors-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Diagnosed Mental Health Conditions:</span> {{ profile.mental_health_diagnosis }}</p>
+                    <p><span class="font-semibold text-gray-600">Social Support Network:</span> {{ profile.social_support_network }}</p>
+                    <div id="psychosocial-factors-form" class="hidden"></div>
+                    <button id="edit-psychosocial-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Occupational Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-5000 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Occupational Factors</h2>
-                <p><span class="font-semibold">Type of Work:</span> {{ profile.occupation }}</p>
-                <p><span class="font-semibold">Stress Levels at Work:</span> {{ profile.work_stress }}</p>
-                <!-- Include other occupational factor fields here -->
-                <button id="edit-occupational-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Occupational Factors</h2>
+                    <button id="occupational-factors-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="occupational-factors-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Type of Work:</span> {{ profile.occupation }}</p>
+                    <p><span class="font-semibold text-gray-600">Stress Levels at Work:</span> {{ profile.work_stress }}</p>
+                    <div id="occupational-factors-form" class="hidden"></div>
+                    <button id="edit-occupational-factors-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Screening Tests Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-5500 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Screening Tests</h2>
-                <p><span class="font-semibold">Last Medical Check-up:</span> {{ profile.last_checkup }}</p>
-                <p><span class="font-semibold">Undergone Screening Tests:</span> {{ profile.cancer_screening }}</p>
-                <!-- Include other screening test fields here -->
-                <button id="edit-screening-tests-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Screening Tests</h2>
+                    <button id="screening-tests-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="screening-tests-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Last Medical Check-up:</span> {{ profile.last_checkup }}</p>
+                    <p><span class="font-semibold text-gray-600">Undergone Screening Tests:</span> {{ profile.cancer_screening }}</p>
+                    <div id="screening-tests-form" class="hidden"></div>
+                    <button id="edit-screening-tests-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Geographic Location Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-6000 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Geographic Location</h2>
-                <p><span class="font-semibold">Residence:</span> {{ profile.residencial_area }}</p>
-                <p><span class="font-semibold">Access to Healthcare Facilities:</span> {{ profile.access_to_healthcare }}</p>
-                <!-- Include other geographic location fields here -->
-                <button id="edit-geographic-location-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Geographic Location</h2>
+                    <button id="geographic-location-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="geographic-location-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Residence:</span> {{ profile.residencial_area }}</p>
+                    <p><span class="font-semibold text-gray-600">Access to Healthcare Facilities:</span> {{ profile.access_to_healthcare }}</p>
+                    <div id="geographic-location-form" class="hidden"></div>
+                    <button id="edit-geographic-location-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         
             <!-- Additional Comments Card -->
-            <div class="card bg-white rounded-lg shadow-md p-6 transition-transform ease-out duration-6500 transform translate-y-4">
-                <h2 class="text-lg font-semibold mb-4">Additional Comments</h2>
-                <p><span class="font-semibold">Other Relevant Information:</span> {{ profile.additional_comments }}</p>
-                <!-- Include other additional comments fields here -->
-                <button id="edit-additional-comments-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+            <div class="card bg-white rounded-lg shadow-md">
+                <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
+                    <h2 class="text-xl font-semibold text-gray-800">Additional Comments</h2>
+                    <button id="additional-comments-toggle" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">Show Details</button>
+                </div>
+                <div id="additional-comments-content" class="p-6 hidden">
+                    <p><span class="font-semibold text-gray-600">Other Relevant Information:</span> {{ profile.additional_comments }}</p>
+                    <div id="additional-comments-form" class="hidden"></div>
+                    <button id="edit-additional-comments-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-4 hover:bg-blue-600">Edit</button>
+                </div>
             </div>
         </div>
         {% else %}
@@ -153,6 +244,91 @@
 </html>
 
 <script>
+    // Demographic Information Toggle
+    document.getElementById('demographic-info-toggle').addEventListener('click', function() {
+        const content = document.getElementById('demographic-info-content');
+        content.classList.toggle('hidden');
+        this.classList.toggle('rotate');
+    });
+
+    // Medical History Toggle
+    document.getElementById('medical-history-toggle').addEventListener('click', function() {
+        const content = document.getElementById('medical-history-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Lifestyle Factors Toggle
+    document.getElementById('lifestyle-factors-toggle').addEventListener('click', function() {
+        const content = document.getElementById('lifestyle-factors-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Biometric Data Toggle
+    document.getElementById('biometric-data-toggle').addEventListener('click', function() {
+        const content = document.getElementById('biometric-data-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Environmental Exposures Toggle
+    document.getElementById('environmental-exposures-toggle').addEventListener('click', function() {
+        const content = document.getElementById('environmental-exposures-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Genetic Factors Toggle
+    document.getElementById('genetic-factors-toggle').addEventListener('click', function() {
+        const content = document.getElementById('genetic-factors-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Behavioral Factors Toggle
+    document.getElementById('behavioral-factors-toggle').addEventListener('click', function() {
+        const content = document.getElementById('behavioral-factors-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Psychosocial Factors Toggle
+    document.getElementById('psychosocial-factors-toggle').addEventListener('click', function() {
+        const content = document.getElementById('psychosocial-factors-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Occupational Factors Toggle
+    document.getElementById('occupational-factors-toggle').addEventListener('click', function() {
+        const content = document.getElementById('occupational-factors-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Screening Tests Toggle
+    document.getElementById('screening-tests-toggle').addEventListener('click', function() {
+        const content = document.getElementById('screening-tests-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Geographic Location Toggle
+    document.getElementById('geographic-location-toggle').addEventListener('click', function() {
+        const content = document.getElementById('geographic-location-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+    // Additional Comments Toggle
+    document.getElementById('additional-comments-toggle').addEventListener('click', function() {
+        const content = document.getElementById('additional-comments-content');
+        content.classList.toggle('hidden');
+        this.textContent = content.classList.contains('hidden') ? 'Show Details' : 'Hide Details';
+    });
+
+
     document.addEventListener("DOMContentLoaded", function() {
         const cards = document.querySelectorAll('.card');
         cards.forEach((card, index) => {
