@@ -31,8 +31,8 @@
             transform: rotate(180deg);
         }
         .navbar{
-            background-color: rgba(15, 20, 29, 0.877);
-            background-image: url("{% static 'users/images/hospital-1.jpg' %}");
+            background-color: rgb(44, 6, 39);
+            
             background-size: cover;
             background-position: center;
             background-blend-mode: overlay;
@@ -42,6 +42,9 @@
             padding: 1rem;
             color: white;
             border-radius: 8px;
+        }
+        .min-h-full{
+            min-height: 100%;
         }
     </style>
 </head>
@@ -58,7 +61,7 @@
         {% if profile %}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Demographic Information Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
                     <h2 class="text-xl font-semibold">Demographic Information</h2>
                     <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
@@ -73,10 +76,10 @@
                 </div>
             </div>
 
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Medical History</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Medical History</h2>
+                    <span id="medical-history-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="medical-history-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Family History of Chronic Diseases:</span> {{ profile.family_history_chronic_diseases }}</p>
@@ -89,10 +92,10 @@
             </div>
         
             <!-- Lifestyle Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Lifestyle Factors</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Lifestyle Factors</h2>
+                    <span id="lifestyle-factors-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="lifestyle-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Daily Diet:</span> {{ profile.typical_daily_diet }}</p>
@@ -107,10 +110,10 @@
             </div>
         
             <!-- Biometric Data Card -->
-            <div class="card-1 bg-white rounded-lg shadow-md">
+            <div class="card-1 bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Biometric Data</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Biometric Data</h2>
+                    <span id="biometric-data-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="biometric-data-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Height:</span> {{ profile.height }} cm</p>
@@ -124,10 +127,10 @@
             </div>
         
             <!-- Environmental Exposures Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Environmental Exposures</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Environmental Exposures</h2>
+                    <span id="environmental-exposures-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="environmental-exposures-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">High Levels of Air Pollution:</span> {{ profile.air_pollution_exposure }}</p>
@@ -139,10 +142,10 @@
             </div>
         
             <!-- Genetic Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Genetic Factors</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Genetic Factors</h2>
+                    <span id="genetic-factors-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="genetic-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Genetic Conditions in Family History:</span> {{ profile.genetic_conditions }}</p>
@@ -154,10 +157,10 @@
         
         
             <!-- Behavioral Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Behavioral Factors</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Behavioral Factors</h2>
+                    <span id="behavioral-factors-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="behavioral-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Adherence to Medical Recommendations:</span> {{ profile.medical_compliance }}</p>
@@ -168,10 +171,10 @@
             </div>
         
             <!-- Psychosocial Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Psychosocial Factors</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Psychosocial Factors</h2>
+                    <span id="psychosocial-factors-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="psychosocial-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Diagnosed Mental Health Conditions:</span> {{ profile.mental_health_diagnosis }}</p>
@@ -182,10 +185,10 @@
             </div>
         
             <!-- Occupational Factors Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Occupational Factors</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Occupational Factors</h2>
+                    <span id="occupational-factors-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="occupational-factors-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Type of Work:</span> {{ profile.occupation }}</p>
@@ -196,10 +199,10 @@
             </div>
         
             <!-- Screening Tests Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Screening Tests</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Screening Tests</h2>
+                    <span id="screening-tests-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="screening-tests-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Last Medical Check-up:</span> {{ profile.last_checkup }}</p>
@@ -210,10 +213,10 @@
             </div>
         
             <!-- Geographic Location Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Geographic Location</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Geographic Location</h2>
+                    <span id="geographic-location-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="geographic-location-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Residence:</span> {{ profile.residencial_area }}</p>
@@ -224,10 +227,10 @@
             </div>
         
             <!-- Additional Comments Card -->
-            <div class="card bg-white rounded-lg shadow-md">
+            <div class="card bg-white rounded-lg shadow-md min-h-full">
                 <div class="navbar bg-gradient-to-r from-blue-500 to-purple-600 flex justify-between items-center px-6 py-4 text-white">
-                    <h2 class="text-xl font-semibold text-gray-800">Additional Comments</h2>
-                    <span id="demographic-info-toggle" class="dropdown-icon">&#9660;</span>
+                    <h2 class="text-xl font-semibold text-white">Additional Comments</h2>
+                    <span id="additional-comments-toggle" class="dropdown-icon">&#9660;</span>
                 </div>
                 <div id="additional-comments-content" class="p-6 hidden">
                     <p><span class="font-semibold text-gray-600">Other Relevant Information:</span> {{ profile.additional_comments }}</p>

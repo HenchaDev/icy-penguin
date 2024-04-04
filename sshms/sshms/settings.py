@@ -47,9 +47,14 @@ INSTALLED_APPS = [
     "apps.main",
     "apps.prediction",
     "apps.users",
+    
 ]
 
 CRISPY_TEMPLATE_PACK = 'tailwind'
+
+SESSION_EXPIRE_SECONDS = 30
+
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 LOGIN_REDIRECT_URL = 'home'
 
@@ -61,6 +66,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "sshms.middleware.SessionTimeoutMiddleware",
 ]
 
 ROOT_URLCONF = "sshms.urls"

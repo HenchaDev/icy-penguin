@@ -28,6 +28,8 @@
             transform: scale(1.1);
         }
     </style>
+
+    {% url 'users:login' as login_url %}
 </head>
 <body class="bg-gray-100">
     <nav class="navbar-main flex justify-between items-center px-8 py-4 text-white">
@@ -64,5 +66,66 @@
             </div>
         </div>
     </div>
+
+    {% if show_login_popup %}
+    <script>
+        showLoginPopup();
+    </script>
+    {% endif %}
+
+    <script>
+        function showLoginPopup() {
+            var modal = document.createElement('div');
+            modal.classList.add('modal');
+
+            var modalContent = document.createElement('div');
+            modalContent.classList.add('modal-content');
+
+            var modalHeader = document.createElement('div');
+            modalHeader.classList.add('modal-header');
+            var modalTitle = document.createElement('h2');
+            modalTitle.textContent = 'Session Expired';
+            modalHeader.appendChild(modalTitle);
+
+            var modalBody = document.createElement('div');
+            modalBody.classList.add('modal-body');
+            var modalMessage = document.createElement('p');
+            modalMessage.textContent = 'Your session has expired. Please log in again.';
+            modalBody.appendChild(modalMessage);
+
+            var modalFooter = document.createElement('div');
+            modalFooter.classList.add('modal-footer');
+            var loginButton = document.createElement('button');
+            loginButton.textContent = 'Log In';
+            loginButton.addEventListener('click', function(){
+                window.location.href = '{% url 'users:login' %}';
+            });
+            modalFooter.appendChild(loginButton);
+
+            modalContent.appendChild(modalHeader);
+            modalContent.appendChild(modalBody);
+            modalContent.appendChild(modalFooter);
+
+            modal.appendChild(modalContent);
+
+            document.body.appendChild(modal);
+
+            modal.style.display = 'block';
+            modal.style.position = 'fixed';
+            modal.style.zIndex = '1';
+            modal.style.left = '0';
+            modal.style.top = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.overflow = 'auto';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.4)';
+
+            modalContent.style.backgroundColor = '#fefefe';
+            modalContent.style.margin = '15% auto';
+            modalContent.style.padding = '20px';
+            modalContent.style.border = '1px solid #888';
+            modalContent.style.width = '30%';
+        }
+    </script>
 </body>
 </html>
