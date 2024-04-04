@@ -30,6 +30,8 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 return redirect('main:home')
+            else:
+                messages.error(request, 'Invalid username or password')
     else:
         form = UserLoginForm()
     return render(request, 'users/login.html', {'form':form})
