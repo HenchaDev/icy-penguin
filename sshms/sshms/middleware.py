@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
-MAX_INACTIVITY_DURATION = getattr(settings, 'SESSION_EXPIRE_SECONDS', 300)
+MAX_INACTIVITY_DURATION = getattr(settings, 'SESSION_EXPIRE_SECONDS', 3600)
 
 class SessionTimeoutMiddleware:
     def __init__(self, get_response):
