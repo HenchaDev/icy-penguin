@@ -10,7 +10,7 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('complete-profile/', views.complete_profile, name='complete_profile'),
     path('profile/', login_required(views.view_profile, login_url='/users/login/'), name='profile'),
-    path('logout/', views.logout, name='logout'),
+    path('logout/', views.logout_user, name='logout_user'),
     path('edit_demographic_info_form/', views.edit_demographic_info_form, name='edit_demographic_info_form'),
     path('edit_demographic_info/', views.edit_demographic_info, name='edit_demographic_info'),
     path('edit_medical_hist_form/', views.edit_medical_hist_form, name='edit_medical_hist_form'),

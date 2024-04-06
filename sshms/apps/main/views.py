@@ -7,7 +7,7 @@ from apps.prediction.models import Prediction
 
 
 # Create your views here.
-@login_required
+
 def home(request):
     if request.user.is_authenticated:
         user_predictions = request.user.predictions.all()
@@ -23,7 +23,7 @@ def home(request):
 class CustomLoginView(LoginView):
     def dispatch(self, request, *args, **kwargs):
         if request.session.session_key is None:
-            return redirect('login')
+            return redirect('users:login')
         
         if request.session.get_expire_at_browser_close():
             messages.error(request, 'Your sessin has expired. Please login again.')

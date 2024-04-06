@@ -7,49 +7,71 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto max-w-md p-4 mt-10">
-        <h2 class="text-3xl font-bold mb-4">Sign Up</h2>
-        <form method="post" action="{% url 'users:sign_up' %}">
-            {% csrf_token %}
-            <div class="mb-4">
-                <label for="id_username" class="block text-sm font-medium text-gray-700">Username:</label>
-                <input type="text" id="id_username" name="username" placeholder="Enter your username" class="form-input mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500">
-            </div>
-            <div class="mb-4">
-                <label for="id_email" class="block text-sm font-medium text-gray-700">Email:</label>
-                <input type="email" id="id_email" name="email" placeholder="Enter your email address" class="form-input mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500">
-            </div>
-            <div class="mb-4">
-                <label for="id_password1" class="block text-sm font-medium text-gray-700">Password:</label>
-                <div class="relative">
-                    <input type="password" id="id_password" name="password1" placeholder="Enter your password" class="form-input mt-1 w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500">
-                    <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 px-3 py-2 bg-gray-200 text-gray-600">
-                        <svg xmlns="https://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464A9.969 9.969 0 0 0 13 9c-3.866 0-7 3.134-7 7 0 1.333.386 2.573 1.048 3.632M5.05 5.05a9.969 9.969 0 0 0 3.633 3.633M18.364 5.636a9.969 9.969 0 0 1 3.633 3.633M19 13a9.969 9.969 0 0 1-1.05 4.364M18.364 18.364a9.969 9.969 0 0 1-3.633 3.633M13 19a9.969 9.969 0 0 1-4.364-1.05M10 4.929v2.142M10 16.929v2.142M7.757 7.757l1.414 1.414M7.757 16.829l1.414-1.414M16.829 7.757l-1.414 1.414M16.829 16.829l-1.414-1.414" />
-                        </svg>
-                    </button>
-            </div>
-            <div class="mb-4">
-                <label for="id_password2" class="block text-sm font-medium text-gray-700">Password confirmation:</label>
-                <div class="relative">
-                    <input type="password" id="id_password" name="password2" placeholder="Enter your password" class="form-input mt-1 w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500">
-                    <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 px-3 py-2 bg-gray-200 text-gray-600">
-                        <svg xmlns="https://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464A9.969 9.969 0 0 0 13 9c-3.866 0-7 3.134-7 7 0 1.333.386 2.573 1.048 3.632M5.05 5.05a9.969 9.969 0 0 0 3.633 3.633M18.364 5.636a9.969 9.969 0 0 1 3.633 3.633M19 13a9.969 9.969 0 0 1-1.05 4.364M18.364 18.364a9.969 9.969 0 0 1-3.633 3.633M13 19a9.969 9.969 0 0 1-4.364-1.05M10 4.929v2.142M10 16.929v2.142M7.757 7.757l1.414 1.414M7.757 16.829l1.414-1.414M16.829 7.757l-1.414 1.414M16.829 16.829l-1.414-1.414" />
-                        </svg>
-                    </button>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Sign Up</button>
-        </form>
+    <div class="flex items-center justify-center h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h2 class="text-3xl font-bold mb-4">Sign Up</h2>
+            <form method="post" action="{% url 'users:sign_up' %}">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <p>{{ field|capfirst }}: {{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="mb-4">
+                    <label for="id_username" class="block text-sm font-medium text-gray-700">Username:</label>
+                    <input type="text" id="id_username" name="username" placeholder="Enter your username" class="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 border shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 focus:ring-1" value="{{ form.username.value|default:'' }}">
+                </div>
+                <div class="mb-4">
+                    <label for="id_email" class="block text-sm font-medium text-gray-700">Email:</label>
+                    <input type="email" id="id_email" name="email" placeholder="Enter your email address" class="mt-1 block w-full px-3 py-2 rounded-md border-gray-300 border shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 focus:ring-1" value="{{ form.email.value|default:'' }}">
+                </div>
+                <div class="mb-4">
+                    <label for="id_password1" class="block text-sm font-medium text-gray-700">Password:</label>
+                    <div class="relative">
+                        <input type="password" id="id_password1" name="password1" placeholder="Enter your password" class="mt-1 w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 focus:ring-1">
+                        <button type="button" id="togglePassword1" class="absolute inset-y-0 right-0 px-3 py-2 bg-gray-200 text-gray-600 rounded-r-md hover:bg-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a9.969 9.969 0 0 0-3.033-3.033M13 9a9.969 9.969 0 0 1 3.034 3.033l-1.01 1.01M13 10a3 3 0 1 0-3-3M13 12a3 3 0 1 0 3-3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="id_password2" class="block text-sm font-medium text-gray-700">Password confirmation:</label>
+                    <div class="relative">
+                        <input type="password" id="id_password2" name="password2" placeholder="Enter your password" class="mt-1 w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:outline-none focus:border-blue-500 focus:ring-blue-500 focus:ring-1">
+                        <button type="button" id="togglePassword2" class="absolute inset-y-0 right-0 px-3 py-2 bg-gray-200 text-gray-600 rounded-r-md hover:bg-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a9.969 9.969 0 0 0-3.033-3.033M13 9a9.969 9.969 0 0 1 3.034 3.033l-1.01 1.01M13 10a3 3 0 1 0-3-3M13 12a3 3 0 1 0 3-3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full">Sign Up</button>
+            </form>
+        </div>
     </div>
     <script>
-        const togglePassword = document.querySelector('#togglePassword')
-        const password = document.querySelector('#id_password')
-
-        togglePassword.addEventListener('click', function(){
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password'
-            password.setAttribute('type', type)
+        const togglePassword1 = document.querySelector('#togglePassword1')
+        const password1 = document.querySelector('#id_password1')
+        togglePassword1.addEventListener('click', function(){
+            const type = password1.getAttribute('type') === 'password' ? 'text' : 'password'
+            password1.setAttribute('type', type)
             this.classList.toggle('text-gray-600')
+            this.classList.toggle('text-gray-800')
+        })
+
+        const togglePassword2 = document.querySelector('#togglePassword2')
+        const password2 = document.querySelector('#id_password2')
+        togglePassword2.addEventListener('click', function(){
+            const type = password2.getAttribute('type') === 'password' ? 'text' : 'password'
+            password2.setAttribute('type', type)
+            this.classList.toggle('text-gray-600')
+            this.classList.toggle('text-gray-800')
         })
     </script>
 </body>

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -29,12 +29,23 @@ def user_login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('main:home')
+                
+                next_url = request.GET.get('next')
+                if next_url:
+                    return redirect(next_url)
+                else:
+                    return redirect('main:home')
             else:
                 messages.error(request, 'Invalid username or password')
     else:
         form = UserLoginForm()
-    return render(request, 'users/login.html', {'form':form})
+        
+    context = {
+        'form': form,
+        'next': request.GET.get('next', '')
+    }
+    
+    return render(request, 'users/login.html', context)
 
 @login_required
 def complete_profile(request):
@@ -67,7 +78,10 @@ def view_profile(request):
     }
     return render(request, 'users/profile.html', context)
 
-def logout(request):
+def logout_user(request):
+    logout(request)
+    request.session.flush()
+    # return redirect('users:login')
     return render(request, 'users/logout.html')
 
 

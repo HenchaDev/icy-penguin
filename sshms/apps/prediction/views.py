@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import google.generativeai as genai
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from apps.users.models import UserProfile
 from .models import Prediction
 
 # Create your views here.
+@login_required
 def generate_text(request):
     if request.method == 'POST':
         try:
@@ -40,10 +42,19 @@ def generate_text(request):
             input_data=input_prompt,
             generated_text=generated_text
         )
+        
+       
 
         return JsonResponse({'response': generated_text})
     else:
-        return render(request, 'prediction/prompt.html')
+        
+        user_predictions = Prediction.objects.filter(user = request.user)
+        
+        context = {
+            'predictions': user_predictions
+        }
+        
+        return render(request, 'prediction/prompt.html', context)
     
 def format_response(response_text):
     sections = response_text.split('\n\n')

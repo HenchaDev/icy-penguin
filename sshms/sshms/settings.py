@@ -56,7 +56,9 @@ SESSION_EXPIRE_SECONDS = 3600
 
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'main:home'
+
+LOGIN_URL = 'users:login'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -125,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 

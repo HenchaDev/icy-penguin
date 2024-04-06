@@ -167,7 +167,8 @@
                     </div>
                 </div>
 
-                <div class="flex justify-end mt-4">
+                <div class="flex justify-between mt-4">
+                    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="prevPart()">Previous</button>
                     <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="nextPart()">Next</button>
                 </div>
             </div>
@@ -218,6 +219,12 @@
                         <input type="text" id="id_work_stress" name="work_stress" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ form.work_stress.value }}">
                     </div>
                 </div>
+
+                <div class="flex justify-between mt-4">
+                    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="prevPart()">Previous</button>
+                    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="nextPart()">Next</button>
+                </div>
+                
             </div>
             <div data-part="4">
             <!-- Screening Tests -->
@@ -265,37 +272,45 @@
 
     <script>
         const forms = document.querySelectorAll('div[data-part]');
-    const progressBar = document.createElement('div');
-    progressBar.classList.add('bg-blue-500', 'h-2', 'rounded-full');
-    document.body.prepend(progressBar);
+        const progressBar = document.createElement('div');
+        progressBar.classList.add('progress-bar', 'bg-blue-500', 'h-2', 'rounded-full');
+        document.body.prepend(progressBar);
 
-    let currentPart = 0;
-    showPart(currentPart);
+        let currentPart = 0;
+        showPart(currentPart);
 
-    function showPart(part) {
-        forms.forEach((form, index) => {
-            if (index === part) {
-                form.style.display = 'block';
-            } else {
-                form.style.display = 'none';
+        function showPart(part) {
+            forms.forEach((form, index) => {
+                if (index === part) {
+                    form.style.display = 'block';
+                } else {
+                    form.style.display = 'none';
+                }
+            });
+            progressBar.style.width = `${(part + 1) * 25}%`;
+        }
+
+        function nextPart() {
+            if (currentPart < forms.length - 1) {
+                currentPart++;
+                showPart(currentPart);
             }
-        });
-        progressBar.style.width = `${(part + 1) * 25}%`;
-    }
-
-    function nextPart() {
-        if (currentPart < forms.length - 1) {
-            currentPart++;
-            showPart(currentPart);
         }
-    }
 
-    function prevPart() {
-        if (currentPart > 0) {
-            currentPart--;
-            showPart(currentPart);
+        function prevPart() {
+            if (currentPart > 0) {
+                currentPart--;
+                showPart(currentPart);
+            }
         }
-    }
     </script>
+
+    <style>
+        .progress-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+    </style>
 </body>
 </html>
