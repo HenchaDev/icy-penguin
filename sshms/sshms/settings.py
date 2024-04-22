@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-GOOGLE_API_KEY = 'AIzaSyCJpEqYUb55Lb2DnxhDlDnUZJO7J7pOZH0'
+GOOGLE_API_KEY = 'AIzaSyDCL7be76pIPZwN5oWY-aEwsRBMIsln79Q'
 
 # Application definition
 

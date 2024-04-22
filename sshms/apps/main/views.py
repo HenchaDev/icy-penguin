@@ -20,6 +20,9 @@ def home(request):
     
     return render(request, 'main/home.html', context)
 
+def homely(request):
+    return render(request, 'main/homely.html')
+
 class CustomLoginView(LoginView):
     def dispatch(self, request, *args, **kwargs):
         if request.session.session_key is None:

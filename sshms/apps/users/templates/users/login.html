@@ -17,7 +17,7 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            <form method="post" action="{% url 'users:login' %}?next={{ next }}">
+            <form method="post" action="{% url 'users:login' %}?next={{ next_url }}">
                 {% csrf_token %}
                 <div class="mb-4">
                     <label for="id_username" class="block text-sm font-medium text-gray-700">Username:</label>
