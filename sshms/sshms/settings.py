@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-GOOGLE_API_KEY = 'AIzaSyDCL7be76pIPZwN5oWY-aEwsRBMIsln79Q'
+GOOGLE_API_KEY = '' # Enter your Gemini API KEY 
 
 # Application definition
 
